@@ -29,7 +29,7 @@ class _ScreenTransactionsState extends State<ScreenTransactions> {
               height: 40,
               child: TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'Search....',
+                  labelText: 'Search...',
                   border: OutlineInputBorder(
                     borderSide: const BorderSide(width: .5, color: Colors.blue),
                     borderRadius: BorderRadius.circular(10),
