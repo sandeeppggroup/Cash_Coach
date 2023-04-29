@@ -1,8 +1,12 @@
 import 'package:hive_flutter/hive_flutter.dart';
 part 'category_model.g.dart';
 
+@HiveType(typeId: 2)
 enum CategoryType {
+  @HiveField(2)
   income,
+
+  @HiveField(1)
   expense,
 }
 

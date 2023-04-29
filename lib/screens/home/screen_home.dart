@@ -172,13 +172,6 @@ class _ScreenHomeState extends State<ScreenHome> {
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      // Icon(
-                      //   Icons.menu,
-                      //   color: Colors.white,
-                      //   size: 40,
-                      // ),
-                    ],
                   ),
                 ),
                 const SizedBox(
