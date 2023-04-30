@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:money_management/db_functions/category/category_db.dart';
+import 'package:money_management/models/category/category_model.dart';
 import 'package:money_management/screens/Statistics/screen_statistics.dart';
 import 'package:money_management/screens/add_transactions/add_transactions.dart';
+import 'package:money_management/screens/category/category_add_popup.dart';
 import 'package:money_management/screens/category/screen_category.dart';
 import 'package:money_management/screens/home/screen_home.dart';
 import 'package:money_management/screens/home/widgets/bottom_navigation.dart';
@@ -40,7 +43,14 @@ class ScreenMain extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => AddTransaction()));
                   } else if (selectedIndexNotifier.value == 1) {
-                    print('add category');
+                    print('Add Category');
+                    showCategoryAddPopup(context);
+                    // final _sample = CategoryModel(
+                    //   id: DateTime.now().millisecondsSinceEpoch.toString(),
+                    //   name: 'Travel',
+                    //   type: CategoryType.expense,
+                    // );
+                    // CategoryDB().insertCategory(_sample);
                   }
                 },
                 child: const Icon(Icons.add),
