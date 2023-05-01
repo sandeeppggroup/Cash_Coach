@@ -1,10 +1,14 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:money_management/db_functions/category/category_db.dart';
 import 'package:money_management/models/category/category_model.dart';
 
 ValueNotifier<CategoryType> selectedCategoryNotifier =
     ValueNotifier(CategoryType.income);
 
 Future<void> showCategoryAddPopup(BuildContext context) async {
+  final _nameEditingController = TextEditingController();
   showDialog(
     context: context,
     builder: (ctx) {
@@ -14,6 +18,7 @@ Future<void> showCategoryAddPopup(BuildContext context) async {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
+              controller: _nameEditingController,
               decoration: InputDecoration(
                 hintText: 'Category Name',
                 border: OutlineInputBorder(
@@ -24,7 +29,23 @@ Future<void> showCategoryAddPopup(BuildContext context) async {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(onPressed: () {}, child: Text('Add')),
+            child: ElevatedButton(
+              onPressed: () {
+                final _name = _nameEditingController.text;
+                if (_name.isEmpty) {
+                  return;
+                }
+                final _type = selectedCategoryNotifier.value;
+                final _category = CategoryModel(
+                  id: DateTime.now().millisecondsSinceEpoch.toString(),
+                  name: _name,
+                  type: _type,
+                );
+                CategoryDB().insertCategory(_category);
+                Navigator.of(ctx).pop();
+              },
+              child: const Text('Add'),
+            ),
           ),
           Row(
             children: const [
@@ -47,11 +68,20 @@ class RadioButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Radio(
-          value: type,
-          groupValue: selectedCategoryNotifier,
-          onChanged: (value) {
-            
+        ValueListenableBuilder(
+          valueListenable: selectedCategoryNotifier,
+          builder: (BuildContext ctx, CategoryType newCategory, Widget? _) {
+            return Radio<CategoryType>(
+              value: type,
+              groupValue: newCategory,
+              onChanged: (value) {
+                if (value == null) {
+                  return;
+                }
+                selectedCategoryNotifier.value = value;
+                selectedCategoryNotifier.notifyListeners();
+              },
+            );
           },
         ),
         Text(title),
