@@ -13,7 +13,7 @@ Future<void> showCategoryAddPopup(BuildContext context) async {
     context: context,
     builder: (ctx) {
       return SimpleDialog(
-        title: Center(child: Text('Add Category')),
+        title: Center(child: Text('Edit Category')),
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),

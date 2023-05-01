@@ -7,16 +7,27 @@ const CATEGORY_DB_NAME = 'category_database';
 abstract class CategoryDbFunctions {
   Future<List<CategoryModel>> getCategories();
   Future<void> insertCategory(CategoryModel value);
+  Future<void> deleteCategory(String categoryID);
+  Future<void> editCategory(CategoryModel updatedCategory);
 }
 
 class CategoryDB implements CategoryDbFunctions {
-  ValueNotifier<List<CategoryModel>> incomeCategoryList = ValueNotifier([]);
-  ValueNotifier<List<CategoryModel>> expenseCategoryList = ValueNotifier([]);
+  CategoryDB._internal();
+  static CategoryDB instance = CategoryDB._internal();
+  factory CategoryDB() {
+    return CategoryDB.instance;
+  }
+
+  ValueNotifier<List<CategoryModel>> incomeCategoryListListener =
+      ValueNotifier([]);
+  ValueNotifier<List<CategoryModel>> expenseCategoryListListener =
+      ValueNotifier([]);
 
   @override
   Future<void> insertCategory(CategoryModel value) async {
     final _categoryDB = await Hive.openBox<CategoryModel>(CATEGORY_DB_NAME);
-    await _categoryDB.add(value);
+    await _categoryDB.put(value.id, value);
+    refreshUI();
   }
 
   @override
@@ -27,13 +38,34 @@ class CategoryDB implements CategoryDbFunctions {
 
   Future<void> refreshUI() async {
     final _allCategories = await getCategories();
+    incomeCategoryListListener.value.clear();
+    expenseCategoryListListener.value.clear();
     await Future.forEach(
       _allCategories,
       (CategoryModel category) {
-        if(category.type == CategoryType.income){
-          
+        if (category.type == CategoryType.income) {
+          incomeCategoryListListener.value.add(category);
+        } else {
+          expenseCategoryListListener.value.add(category);
         }
       },
     );
+    incomeCategoryListListener.notifyListeners();
+    expenseCategoryListListener.notifyListeners();
+  }
+
+  @override
+  Future<void> deleteCategory(String categoryID) async {
+    final _categoryDB = await Hive.openBox<CategoryModel>(CATEGORY_DB_NAME);
+    await _categoryDB.delete(categoryID);
+    refreshUI();
+  }
+  
+  @override
+  Future<void> editCategory(CategoryModel updatedCategory)async {
+    final _categoryDB = await Hive.openBox <CategoryModel>(CATEGORY_DB_NAME);
+    await _categoryDB.put(updatedCategory.id, updatedCategory);
+  refreshUI();
+
   }
 }

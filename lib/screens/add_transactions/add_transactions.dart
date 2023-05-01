@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:money_management/db_functions/category/category_db.dart';
+import 'package:money_management/models/category/category_model.dart';
 
 class AddTransaction extends StatelessWidget {
   const AddTransaction({super.key});
+  // final newValue = CategoryType.income;
 
   @override
   Widget build(BuildContext context) {
     final _amountController = TextEditingController();
+    final _categoryController = TextEditingController();
+    final _discriptionController = TextEditingController();
+    final _dateController = TextEditingController();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 4, 78, 207),
         centerTitle: true,
         title: Text(
           'Add Transaction',
@@ -38,7 +45,7 @@ class AddTransaction extends StatelessWidget {
                     OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
               ),
               controller: _amountController,
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.number,
               onChanged: (value) {
                 print('Name changed to $value');
               },
@@ -51,29 +58,7 @@ class AddTransaction extends StatelessWidget {
               textInputAction: TextInputAction.done,
             ),
             SizedBox(
-              height: 70,
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Category',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-              ),
-              controller: _amountController,
-              keyboardType: TextInputType.text,
-              onChanged: (value) {
-                print('Name changed to $value');
-              },
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please Select category';
-                }
-                return null;
-              },
-              textInputAction: TextInputAction.done,
-            ),
-            SizedBox(
-              height: 20,
+              height: 15,
             ),
             TextFormField(
               decoration: InputDecoration(
@@ -81,7 +66,7 @@ class AddTransaction extends StatelessWidget {
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
               ),
-              controller: _amountController,
+              controller: _discriptionController,
               keyboardType: TextInputType.text,
               onChanged: (value) {
                 print('changed to $value');
@@ -95,11 +80,40 @@ class AddTransaction extends StatelessWidget {
               textInputAction: TextInputAction.done,
             ),
             SizedBox(
-              height: 20,
+              height: 15,
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: 'Pick your date',
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+              ),
+              controller: _dateController,
+              keyboardType: TextInputType.text,
+              onChanged: (value) {
+                print('Name changed to $value');
+              },
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Please select date';
+                }
+                return null;
+              },
+              textInputAction: TextInputAction.done,
+            ),
+            SizedBox(
+              height: 30,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                Radio(
+                  value: CategoryType.income,
+                  groupValue: CategoryType.income,
+                  onChanged: (newValue) {
+                    newValue = CategoryType.income;
+                  },
+                ),
                 SizedBox(
                   height: 30,
                   child: ElevatedButton(
@@ -126,32 +140,51 @@ class AddTransaction extends StatelessWidget {
                     ),
                   ),
                 ),
+                Radio(
+                  value: CategoryType.expense,
+                  groupValue: CategoryType.expense,
+                  onChanged: (newValue) {
+                    newValue = CategoryType.expense;
+                  },
+                ),
               ],
             ),
             SizedBox(
-              height: 20,
+              height: 30,
+            ),
+            DropdownButton(
+              items:
+                  CategoryDB.instance.incomeCategoryListListener.value.map((e) {
+                return DropdownMenuItem(
+                  value: e.id,
+                  child: Text(e.name),
+                );
+              }).toList(),
+              onChanged: (selectedValue) {
+                print('selected value');
+              },
             ),
             TextFormField(
               decoration: InputDecoration(
-                labelText: 'Pick your date',
+                labelText: 'Category',
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
               ),
-              controller: _amountController,
+              controller: _categoryController,
               keyboardType: TextInputType.text,
               onChanged: (value) {
                 print('Name changed to $value');
               },
               validator: (value) {
                 if (value!.isEmpty) {
-                  return 'Please select date';
+                  return 'Please Select category';
                 }
                 return null;
               },
               textInputAction: TextInputAction.done,
             ),
             SizedBox(
-              height: 30,
+              height: 100,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -163,6 +196,7 @@ class AddTransaction extends StatelessWidget {
                     onPressed: () {},
                     child: Text('Continue'),
                     style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 4, 78, 207),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
