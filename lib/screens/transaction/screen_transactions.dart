@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:money_management/screens/dropdown_button/dropdown_button.dart';
 
+import '../../db_functions/category/category_db.dart';
+
 class ScreenTransactions extends StatefulWidget {
   const ScreenTransactions({super.key});
 
@@ -8,7 +10,23 @@ class ScreenTransactions extends StatefulWidget {
   State<ScreenTransactions> createState() => _ScreenTransactionsState();
 }
 
-class _ScreenTransactionsState extends State<ScreenTransactions> {
+class _ScreenTransactionsState extends State<ScreenTransactions>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 3, vsync: this);
+    CategoryDB().refreshUI();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var dropdownValue;
@@ -36,6 +54,32 @@ class _ScreenTransactionsState extends State<ScreenTransactions> {
                   ),
                   fillColor: Colors.grey[100],
                   filled: true,
+                ),
+              ),
+            ),
+            Container(
+              child: Card(
+                child: TabBar(
+                  indicator: BoxDecoration(
+                    color: const Color.fromARGB(255, 4, 78, 207),
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  labelColor: Colors.white,
+                  labelStyle: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w700),
+                  unselectedLabelColor: const Color.fromARGB(255, 4, 78, 207),
+                  controller: _tabController,
+                  tabs: const [
+                    Tab(
+                      text: 'Income',
+                    ),
+                    Tab(
+                      text: 'Expense',
+                    ),
+                    Tab(
+                      text: 'All',
+                    ),
+                  ],
                 ),
               ),
             ),

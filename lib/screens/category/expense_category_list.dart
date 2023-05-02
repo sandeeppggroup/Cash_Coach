@@ -19,21 +19,22 @@ class ExpenseCategoryList extends StatelessWidget {
           itemBuilder: (ctx, index) {
             final category = newList[index];
             return Card(
+              elevation: 30,
               child: ListTile(
                 title: Text(category.name),
                 trailing: Wrap(
                   spacing: 2, // space between two icons
                   children: <Widget>[
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.edit,
-                        color: Colors.blueGrey,
-                      ),
-                    ), // icon-1
+                    // IconButton(
+                    //   onPressed: () {},
+                    //   icon: const Icon(
+                    //     Icons.edit,
+                    //     color: Colors.blueGrey,
+                    //   ),
+                    // ),
                     IconButton(
                       onPressed: () {
-                        CategoryDB.instance.deleteCategory(category.id);
+                        showDeleteDialog(context, category.id);
                       },
                       icon: const Icon(
                         Icons.delete,
@@ -51,6 +52,33 @@ class ExpenseCategoryList extends StatelessWidget {
             );
           },
           itemCount: newList.length,
+        );
+      },
+    );
+  }
+
+  void showDeleteDialog(BuildContext context, String id) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete category'),
+          content: const Text('Are you sure you want to delete this category?'),
+          actions: <Widget>[
+            ElevatedButton(
+              child: const Text('CANCEL'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              child: const Text('DELETE'),
+              onPressed: () {
+                CategoryDB.instance.deleteCategory(id);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
         );
       },
     );

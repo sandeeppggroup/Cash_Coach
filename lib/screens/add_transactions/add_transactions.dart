@@ -83,6 +83,14 @@ class AddTransaction extends StatelessWidget {
               height: 15,
             ),
             TextFormField(
+              onTap: () {
+                Future<DateTime?> v = showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime.now().subtract(Duration(days: 60)),
+                  lastDate: DateTime.now(),
+                );
+              },
               decoration: InputDecoration(
                 labelText: 'Pick your date',
                 border:
@@ -152,17 +160,21 @@ class AddTransaction extends StatelessWidget {
             SizedBox(
               height: 30,
             ),
-            DropdownButton(
-              items:
-                  CategoryDB.instance.incomeCategoryListListener.value.map((e) {
-                return DropdownMenuItem(
-                  value: e.id,
-                  child: Text(e.name),
-                );
-              }).toList(),
-              onChanged: (selectedValue) {
-                print('selected value');
-              },
+            Center(
+              child: DropdownButton(
+                hint: Text('Select Category'),
+                // value: ,
+                items: CategoryDB.instance.expenseCategoryListListener.value
+                    .map((e) {
+                  return DropdownMenuItem(
+                    value: e.id,
+                    child: Text(e.name),
+                  );
+                }).toList(),
+                onChanged: (selectedValue) {
+                  print('selected value');
+                },
+              ),
             ),
             TextFormField(
               decoration: InputDecoration(
@@ -184,7 +196,7 @@ class AddTransaction extends StatelessWidget {
               textInputAction: TextInputAction.done,
             ),
             SizedBox(
-              height: 100,
+              height: 80,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -194,7 +206,11 @@ class AddTransaction extends StatelessWidget {
                   width: 340,
                   child: ElevatedButton(
                     onPressed: () {},
-                    child: Text('Continue'),
+                    child: Text(
+                      'Submit',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 4, 78, 207),
                       shape: RoundedRectangleBorder(

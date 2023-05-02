@@ -52,22 +52,32 @@ class _ScreenCategoryState extends State<ScreenCategory>
               ),
               child: Column(
                 children: [
-                  TabBar(
-                    indicator: BoxDecoration(
-                      color: const Color.fromARGB(255, 4, 78, 207),
-                      borderRadius: BorderRadius.circular(20),
+                  Container(
+                    child: Card(
+                      child: TabBar(
+                        indicator: BoxDecoration(
+                          color: const Color.fromARGB(255, 4, 78, 207),
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        labelColor: Colors.white,
+                        labelStyle: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w700),
+                        unselectedLabelColor:
+                            const Color.fromARGB(255, 4, 78, 207),
+                        controller: _tabController,
+                        tabs: const [
+                          Tab(
+                            text: 'Income',
+                          ),
+                          Tab(
+                            text: 'Expense',
+                          ),
+                        ],
+                      ),
                     ),
-                    labelColor: Colors.white,
-                    unselectedLabelColor: const Color.fromARGB(255, 4, 78, 207),
-                    controller: _tabController,
-                    tabs: const [
-                      Tab(
-                        text: 'Income',
-                      ),
-                      Tab(
-                        text: 'Expense',
-                      ),
-                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                   Expanded(
                     child: TabBarView(
