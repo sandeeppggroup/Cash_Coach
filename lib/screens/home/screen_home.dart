@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:money_management/screens/drawer%20pages/about.dart';
-import 'package:money_management/screens/drawer%20pages/privacy_policy.dart';
-import 'package:money_management/screens/drawer%20pages/terms.dart';
+import 'package:money_management/screens/drawer_pages/about.dart';
+import 'package:money_management/screens/drawer_pages/privacy_policy.dart';
+import 'package:money_management/screens/drawer_pages/terms.dart';
 import 'package:money_management/screens/screen_splash/splash_two.dart';
 import 'package:money_management/screens/transaction/screen_transactions.dart';
 

@@ -11,15 +11,21 @@ class AddTransaction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _amountController = TextEditingController();
+
     final _categoryController = TextEditingController();
+
     final _discriptionController = TextEditingController();
+
     final _dateController = TextEditingController();
+
+    DateTime _selectedDate;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 4, 78, 207),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Add Transaction',
         ),
       ),
@@ -28,16 +34,17 @@ class AddTransaction extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 35,
             ),
-            Text(
+            const Text(
               'Amount',
               style: TextStyle(fontSize: 25),
             ),
-            SizedBox(
+            const SizedBox(
               height: 3,
             ),
+            // Textformfield for amount *******************************************  1
             TextFormField(
               decoration: InputDecoration(
                 labelText: 'Amount',
@@ -57,9 +64,10 @@ class AddTransaction extends StatelessWidget {
               },
               textInputAction: TextInputAction.done,
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
+            // Textformfield for Discription *******************************************   2
             TextFormField(
               decoration: InputDecoration(
                 labelText: 'Discription',
@@ -79,18 +87,12 @@ class AddTransaction extends StatelessWidget {
               },
               textInputAction: TextInputAction.done,
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
+            // Textformfield for Date picker *******************************************  3
             TextFormField(
-              onTap: () {
-                Future<DateTime?> v = showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime.now().subtract(Duration(days: 60)),
-                  lastDate: DateTime.now(),
-                );
-              },
+              onTap: () {},
               decoration: InputDecoration(
                 labelText: 'Pick your date',
                 border:
@@ -109,9 +111,11 @@ class AddTransaction extends StatelessWidget {
               },
               textInputAction: TextInputAction.done,
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
+
+            // Radiobutton and elevatedButtons *******************************************
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -126,26 +130,26 @@ class AddTransaction extends StatelessWidget {
                   height: 30,
                   child: ElevatedButton(
                     onPressed: () {},
-                    child: Text('Income'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
+                    child: const Text('Income'),
                   ),
                 ),
                 SizedBox(
                   height: 30,
                   child: ElevatedButton(
                     onPressed: () {},
-                    child: Text('Expense'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
+                    child: const Text('Expense'),
                   ),
                 ),
                 Radio(
@@ -157,12 +161,13 @@ class AddTransaction extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
+            // Dropdown button *******************************************
             Center(
               child: DropdownButton(
-                hint: Text('Select Category'),
+                hint: const Text('Select Category'),
                 // value: ,
                 items: CategoryDB.instance.expenseCategoryListListener.value
                     .map((e) {
@@ -176,6 +181,7 @@ class AddTransaction extends StatelessWidget {
                 },
               ),
             ),
+            // Textformfield for category *******************************************   4
             TextFormField(
               decoration: InputDecoration(
                 labelText: 'Category',
@@ -195,7 +201,7 @@ class AddTransaction extends StatelessWidget {
               },
               textInputAction: TextInputAction.done,
             ),
-            SizedBox(
+            const SizedBox(
               height: 80,
             ),
             Row(
@@ -206,16 +212,16 @@ class AddTransaction extends StatelessWidget {
                   width: 340,
                   child: ElevatedButton(
                     onPressed: () {},
-                    child: Text(
-                      'Submit',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 4, 78, 207),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
+                    ),
+                    child: const Text(
+                      'Submit',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                     ),
                   ),
                 ),
@@ -224,6 +230,15 @@ class AddTransaction extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? picker = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now().subtract(Duration(days: 60)),
+      lastDate: DateTime.now(),
     );
   }
 }
