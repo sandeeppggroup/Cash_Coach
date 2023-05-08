@@ -1,25 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:intl/intl.dart';
 import 'package:money_management/db_functions/category/category_db.dart';
 import 'package:money_management/models/category/category_model.dart';
 
-class AddTransaction extends StatelessWidget {
+class AddTransaction extends StatefulWidget {
   const AddTransaction({super.key});
-  // final newValue = CategoryType.income;
 
   @override
+  State<AddTransaction> createState() => _AddTransactionState();
+}
+
+class _AddTransactionState extends State<AddTransaction> {
+  final _amountController = TextEditingController();
+
+  final _categoryController = TextEditingController();
+
+  final _discriptionController = TextEditingController();
+
+  final _dateController = TextEditingController();
+
+  DateTime? _selectedDate;
+
+  CategoryType? _selectedCategoryType;
+
+  CategoryModel? _selectedCategoryModel;
+
+  String? _selectedOption;
+
+  @override
+  void initState() {
+    _selectedCategoryType = CategoryType.income;
+    super.initState();
+  }
+
+  // final newValue = CategoryType.income;
+  @override
   Widget build(BuildContext context) {
-    final _amountController = TextEditingController();
-
-    final _categoryController = TextEditingController();
-
-    final _discriptionController = TextEditingController();
-
-    final _dateController = TextEditingController();
-
-    DateTime _selectedDate;
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -91,13 +109,21 @@ class AddTransaction extends StatelessWidget {
               height: 15,
             ),
             // Textformfield for Date picker *******************************************  3
+            // if (_selectedDate == null)
             TextFormField(
               onTap: () {},
               decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    selectDate(context);
+                  },
+                  icon: Icon(Icons.calendar_today),
+                ),
                 labelText: 'Pick your date',
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
               ),
+              readOnly: true,
               controller: _dateController,
               keyboardType: TextInputType.text,
               onChanged: (value) {
@@ -111,6 +137,8 @@ class AddTransaction extends StatelessWidget {
               },
               textInputAction: TextInputAction.done,
             ),
+            // else
+
             const SizedBox(
               height: 30,
             ),
@@ -121,9 +149,12 @@ class AddTransaction extends StatelessWidget {
               children: [
                 Radio(
                   value: CategoryType.income,
-                  groupValue: CategoryType.income,
+                  groupValue: _selectedCategoryType,
                   onChanged: (newValue) {
-                    newValue = CategoryType.income;
+                    setState(() {
+                      _selectedCategoryType = CategoryType.income;
+                      _selectedOption = null;
+                    });
                   },
                 ),
                 SizedBox(
@@ -154,9 +185,12 @@ class AddTransaction extends StatelessWidget {
                 ),
                 Radio(
                   value: CategoryType.expense,
-                  groupValue: CategoryType.expense,
+                  groupValue: _selectedCategoryType,
                   onChanged: (newValue) {
-                    newValue = CategoryType.expense;
+                    setState(() {
+                      _selectedCategoryType = CategoryType.expense;
+                      _selectedOption = null;
+                    });
                   },
                 ),
               ],
@@ -164,45 +198,36 @@ class AddTransaction extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            // Dropdown button *******************************************
-            Center(
-              child: DropdownButton(
-                hint: const Text('Select Category'),
-                // value: ,
-                items: CategoryDB.instance.expenseCategoryListListener.value
-                    .map((e) {
-                  return DropdownMenuItem(
-                    value: e.id,
-                    child: Text(e.name),
-                  );
-                }).toList(),
-                onChanged: (selectedValue) {
-                  print('selected value');
-                },
-              ),
-            ),
+
             // Textformfield for category *******************************************   4
-            TextFormField(
+
+            DropdownButtonFormField<String>(
+              borderRadius: BorderRadius.circular(20),
+              value: _selectedOption,
+              items: (_selectedCategoryType == CategoryType.income
+                      ? CategoryDB().incomeCategoryListListener
+                      : CategoryDB().expenseCategoryListListener)
+                  .value
+                  .map((e) {
+                return DropdownMenuItem(
+                  value: e.id,
+                  child: Text(e.name),
+                );
+              }).toList(),
+              onChanged: (selectedValue) {
+                setState(() {
+                  _selectedOption = selectedValue;
+                });
+              },
+              
               decoration: InputDecoration(
-                labelText: 'Category',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-              ),
-              controller: _categoryController,
-              keyboardType: TextInputType.text,
-              onChanged: (value) {
-                print('Name changed to $value');
-              },
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please Select category';
-                }
-                return null;
-              },
-              textInputAction: TextInputAction.done,
+                  labelText: 'Select Category',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20))),
             ),
+
             const SizedBox(
-              height: 80,
+              height: 10,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -211,7 +236,9 @@ class AddTransaction extends StatelessWidget {
                   height: 50,
                   width: 340,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      print(_selectedOption);
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 4, 78, 207),
                       shape: RoundedRectangleBorder(
@@ -234,11 +261,17 @@ class AddTransaction extends StatelessWidget {
   }
 
   Future<void> selectDate(BuildContext context) async {
-    final DateTime? picker = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now().subtract(Duration(days: 60)),
       lastDate: DateTime.now(),
     );
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+        _dateController.text = DateFormat('dd-MMM-yyyy').format(_selectedDate!);
+      });
+    }
   }
 }
