@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:intl/intl.dart';
+import 'package:money_management/db_functions/transactions/transaction_db.dart';
+import 'package:money_management/models/category/category_model.dart';
+import 'package:money_management/models/transaction/transaction_model.dart';
+import 'package:money_management/screens/category/income_category_list.dart';
 import 'package:money_management/screens/drawer_pages/about.dart';
 import 'package:money_management/screens/drawer_pages/privacy_policy.dart';
 import 'package:money_management/screens/drawer_pages/terms.dart';
@@ -16,6 +21,7 @@ class ScreenHome extends StatefulWidget {
 
 class _ScreenHomeState extends State<ScreenHome> {
   Widget build(BuildContext context) {
+    TransactionDB.instance.refresh();
     return Scaffold(
       appBar: AppBar(
         leading: Builder(
@@ -319,25 +325,46 @@ class _ScreenHomeState extends State<ScreenHome> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: 4,
-              itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  child: ListTile(
-                    title: const Text('Shopping'),
-                    subtitle: const Text('Buy some grocery'),
-                    trailing: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Text(
-                          '-5120',
-                          style: TextStyle(color: Colors.red),
+            child: ValueListenableBuilder(
+              valueListenable: TransactionDB.instance.transactionListNOtifier,
+              builder: (BuildContext context, List<TransactionModel> newList,
+                  Widget? _) {
+                return ListView.builder(
+                  itemCount: newList.length,
+                  // values
+                  itemBuilder: (BuildContext context, int index) {
+                    final _value = newList[index];
+                    final _date = _value.date;
+                    final _formatedDate = DateFormat('dd-MMM').format(_date);
+                    return Card(
+                      child: ListTile(
+                        title: Text(_value.category.name),
+                        subtitle: Text(_value.discription),
+                        trailing: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (_value.type == CategoryType.expense)
+                              Text(
+                                'Rs ${_value.amount}',
+                                style:
+                                    TextStyle(color: Colors.red, fontSize: 20),
+                              )
+                            else
+                              Text(
+                                'Rs ${_value.amount}',
+                                style: TextStyle(
+                                    color: Colors.green, fontSize: 20),
+                              ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(_formatedDate),
+                          ],
                         ),
-                        Text('26/02/2023')
-                      ],
-                    ),
-                  ),
+                      ),
+                    );
+                  },
                 );
               },
             ),
