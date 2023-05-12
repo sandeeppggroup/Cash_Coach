@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
@@ -79,12 +80,25 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
                 controller: _amountController,
                 keyboardType: TextInputType.number,
+                // inputFormatters: <TextInputFormatter>[
+                //   FilteringTextInputFormatter.digitsOnly,
+                // ],
                 onChanged: (value) {
                   _inputValue == value;
                 },
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please enter amount';
+                  }
+                  // Ensure input contains only digits and at most one decimal point
+                  final RegExp regex = RegExp(r'^\d*\.?\d*$');
+                  if (!regex.hasMatch(value)) {
+                    return 'Input must contain only numbers and at most one decimal point';
+                  }
+
+                  // Ensure input is a valid decimal value
+                  if (double.tryParse(value) == null) {
+                    return 'Input must be a valid decimal value';
                   }
                   return null;
                 },
@@ -166,9 +180,14 @@ class _AddTransactionState extends State<AddTransaction> {
                     },
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 32,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          _selectedCategoryType = CategoryType.income;
+                          _categoryID = null;
+                        });
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
                         shape: RoundedRectangleBorder(
@@ -181,7 +200,12 @@ class _AddTransactionState extends State<AddTransaction> {
                   SizedBox(
                     height: 30,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          _selectedCategoryType = CategoryType.expense;
+                          _categoryID = null;
+                        });
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                         shape: RoundedRectangleBorder(
@@ -245,30 +269,32 @@ class _AddTransactionState extends State<AddTransaction> {
               const SizedBox(
                 height: 10,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 50,
-                    width: 340,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        addTransaction();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 4, 78, 207),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: const Text(
-                        'Submit',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w700),
-                      ),
+              SizedBox(
+                height: 50,
+                width: 340,
+                child: ElevatedButton(
+                  onPressed: () {
+                    addTransactionOnclicked();
+
+                    _amountController.clear();
+
+                    _discriptionController.clear();
+
+                    _dateController.clear();
+
+                    _categoryController.clear();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 4, 78, 207),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                ],
+                  child: const Text(
+                    'Submit',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                  ),
+                ),
               ),
             ],
           ),
@@ -281,7 +307,7 @@ class _AddTransactionState extends State<AddTransaction> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime.now().subtract(Duration(days: 60)),
+      firstDate: DateTime.now().subtract(const Duration(days: 60)),
       lastDate: DateTime.now(),
     );
     if (picked != null && picked != _selectedDate) {
@@ -292,39 +318,34 @@ class _AddTransactionState extends State<AddTransaction> {
     }
   }
 
-  Future<void> addTransaction() async {
-    final _amountText = _amountController.text;
-    final _discriptionText = _discriptionController.text;
-    // if (_amountText.isEmpty) {
-    //   return;
-    // }
-    // if (_discriptionText.isEmpty) {
-    //   return;
-    // }
-    // if (_categoryID == null) {
-    //   return;
-    // }
+  Future<void> addTransactionOnclicked() async {
+    final amountText = _amountController.text;
+    final discriptionText = _discriptionController.text;
+
     if (_formKey.currentState!.validate()) {
       _formKey.currentState?.save();
-      final _amount = _amountController.text;
-      if (_amount.isEmpty) {
+      final amount = _amountController.text;
+      if (amount.isEmpty) {
         return;
       }
     }
+
     if (_formKey.currentState!.validate()) {
       _formKey.currentState?.save();
-      final _discription = _discriptionController.text;
-      if (_discription.isEmpty) {
+      final discription = _discriptionController.text;
+      if (discription.isEmpty) {
         return;
       }
     }
+
     if (_formKey.currentState!.validate()) {
       _formKey.currentState?.save();
-      final _date = _dateController.text;
-      if (_date.isEmpty) {
+      final date = _dateController.text;
+      if (date.isEmpty) {
         return;
       }
     }
+
     if (_formKey.currentState!.validate()) {
       _formKey.currentState?.save();
 
@@ -333,22 +354,20 @@ class _AddTransactionState extends State<AddTransaction> {
       }
     }
 
-    // _selectedDate;
-    // _selectedCategoryType;
-    // _categoryID;
-
-    final _parsedAmount = double.tryParse(_amountText);
-    if (_parsedAmount == null) {
+    final parsedAmount = double.tryParse(amountText);
+    if (parsedAmount == null) {
       return;
     }
 
-    final _model = TransactionModel(
-      amount: _parsedAmount,
-      discription: _discriptionText,
-      date: _selectedDate!,
-      type: _selectedCategoryType!,
-      category: _selectedCategoryModel!,
-    );
-    TransactionDB.instance.addTransaction(_model);
+    final model = TransactionModel(
+        amount: parsedAmount,
+        discription: discriptionText,
+        date: _selectedDate!,
+        type: _selectedCategoryType!,
+        category: _selectedCategoryModel!,
+        id: DateTime.now().millisecondsSinceEpoch.toString());
+    await TransactionDB.instance.addTransaction(model);
+    Navigator.of(context).pop();
+    TransactionDB.instance.refresh();
   }
 }

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
+import 'package:money_management/db_functions/category/category_db.dart';
 import 'package:money_management/db_functions/transactions/transaction_db.dart';
 import 'package:money_management/models/category/category_model.dart';
 import 'package:money_management/models/transaction/transaction_model.dart';
+import 'package:money_management/screens/add_transactions/add_transactions.dart';
 import 'package:money_management/screens/category/income_category_list.dart';
 import 'package:money_management/screens/drawer_pages/about.dart';
 import 'package:money_management/screens/drawer_pages/privacy_policy.dart';
@@ -22,6 +26,7 @@ class ScreenHome extends StatefulWidget {
 class _ScreenHomeState extends State<ScreenHome> {
   Widget build(BuildContext context) {
     TransactionDB.instance.refresh();
+    CategoryDB.instance.refreshUI();
     return Scaffold(
       appBar: AppBar(
         leading: Builder(
@@ -164,8 +169,8 @@ class _ScreenHomeState extends State<ScreenHome> {
       body: Column(
         children: [
           Container(
-            width: double.infinity,
-            height: 270,
+            height: MediaQuery.of(context).size.height * 0.35,
+            // width: MediaQuery.of(context).size.width * 0.7,
             decoration: const BoxDecoration(
                 color: Color.fromARGB(255, 3, 20, 114),
                 borderRadius: BorderRadius.only(
@@ -200,49 +205,46 @@ class _ScreenHomeState extends State<ScreenHome> {
                   ),
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
-                        height: 70,
-                        width: 180,
+                        height: MediaQuery.of(context).size.height * 0.1,
+                        width: MediaQuery.of(context).size.width * 0.41,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: const Color.fromARGB(255, 4, 78, 207),
                         ),
                         child: Row(
                           children: [
-                            Row(
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.all(6.0),
-                                  child: Icon(
-                                    Icons.wallet_travel,
-                                    color: Colors.white,
-                                    size: 40,
-                                  ),
+                            const Padding(
+                              padding: EdgeInsets.all(6.0),
+                              child: Icon(
+                                Icons.arrow_downward,
+                                color: Colors.white,
+                                size: 40,
+                              ),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                SizedBox(
+                                  height: 10,
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      'Income',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 13),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      '₹50000',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 22),
-                                    )
-                                  ],
-                                )
+                                Text(
+                                  'Income',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 13),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  '₹50000',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 22),
+                                ),
                               ],
                             )
                           ],
@@ -252,8 +254,8 @@ class _ScreenHomeState extends State<ScreenHome> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
-                        height: 70,
-                        width: 180,
+                        height: MediaQuery.of(context).size.height * 0.1,
+                        width: MediaQuery.of(context).size.width * 0.41,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: const Color.fromARGB(255, 4, 78, 207),
@@ -265,7 +267,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                                 const Padding(
                                   padding: EdgeInsets.all(6.0),
                                   child: Icon(
-                                    Icons.attach_money,
+                                    Icons.arrow_upward,
                                     color: Colors.white,
                                     size: 40,
                                   ),
@@ -315,7 +317,13 @@ class _ScreenHomeState extends State<ScreenHome> {
                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ScreenTransactions(),
+                        ));
+                  },
                   child: const Text(
                     'View all',
                     style: TextStyle(fontSize: 17),
@@ -336,31 +344,108 @@ class _ScreenHomeState extends State<ScreenHome> {
                     final _value = newList[index];
                     final _date = _value.date;
                     final _formatedDate = DateFormat('dd-MMM').format(_date);
-                    return Card(
-                      child: ListTile(
-                        title: Text(_value.category.name),
-                        subtitle: Text(_value.discription),
-                        trailing: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (_value.type == CategoryType.expense)
+                    return Slidable(
+                      key: Key(_value.id!),
+                      startActionPane: ActionPane(
+                        motion: const StretchMotion(),
+                        children: [
+                          SlidableAction(
+                            borderRadius: BorderRadius.circular(30),
+                            padding: EdgeInsets.all(8),
+                            backgroundColor: Color.fromARGB(255, 4, 78, 207),
+                            foregroundColor: Colors.white,
+                            icon: IconlyLight.edit,
+                            label: 'Edit',
+                            onPressed: (context) {
+                              final model = TransactionModel(
+                                  discription: _value.discription,
+                                  amount: _value.amount,
+                                  date: _value.date,
+                                  category: _value.category,
+                                  type: _value.type,
+                                  id: _value.id);
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => EditTransaction(
+                              //               model: model,
+                              //             )));
+                            },
+                          ),
+                          SlidableAction(
+                            borderRadius: BorderRadius.circular(30),
+                            spacing: 8,
+                            backgroundColor: Color.fromARGB(255, 4, 78, 207),
+                            foregroundColor: Colors.white,
+                            icon: IconlyLight.delete,
+                            label: 'Delete',
+                            onPressed: (context) {
+                              _value.id;
+
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Delete'),
+                                    content: const Text(
+                                        'Are you sure?Do you want to delete this transaction?'),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('Cancel')),
+                                      TextButton(
+                                          onPressed: () {
+                                            TransactionDB.instance
+                                                .deleteTransaction(_value.id!);
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('Ok'))
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          )
+                        ],
+                      ),
+                      child: Card(
+                        elevation: 20,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        child: ListTile(
+                          leading: Text(
+                            parseDate(_value.date),
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          trailing: Column(
+                            children: [
                               Text(
-                                'Rs ${_value.amount}',
-                                style:
-                                    TextStyle(color: Colors.red, fontSize: 20),
-                              )
-                            else
-                              Text(
-                                'Rs ${_value.amount}',
+                                ' ${_value.category.name}',
                                 style: TextStyle(
-                                    color: Colors.green, fontSize: 20),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  color: _value.type == CategoryType.income
+                                      ? Colors.green
+                                      : Colors.red,
+                                ),
                               ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(_formatedDate),
-                          ],
+                              Text(
+                                "₹ ${_value.amount}",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                  color: _value.type == CategoryType.income
+                                      ? Colors.green
+                                      : Colors.red,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );
@@ -372,5 +457,11 @@ class _ScreenHomeState extends State<ScreenHome> {
         ],
       ),
     );
+  }
+
+  String parseDate(DateTime date) {
+    final date0 = DateFormat.MMMd().format(date);
+    final splitedDate = date0.split(' ');
+    return '${splitedDate.last}\n${splitedDate.first}';
   }
 }

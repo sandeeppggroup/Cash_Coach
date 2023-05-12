@@ -36,7 +36,7 @@ class _ScreenCategoryState extends State<ScreenCategory>
             padding: const EdgeInsets.all(8.0),
             child: Container(
               width: MediaQuery.of(context).size.width *
-                  .935, // set width to 80% of screen width
+                  0.930, // set width to 80% of screen width
               height: MediaQuery.of(context).size.height * 1, //
               decoration: BoxDecoration(
                 color: Colors.white,

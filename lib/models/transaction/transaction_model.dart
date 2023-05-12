@@ -22,13 +22,13 @@ class TransactionModel {
   @HiveField(5)
   String? id;
 
-  TransactionModel({
-    required this.amount,
-    required this.discription,
-    required this.date,
-    required this.type,
-    required this.category,
-  }){ 
+  TransactionModel(
+      {required this.amount,
+      required this.discription,
+      required this.date,
+      required this.type,
+      required this.category,
+      required this.id}) {
     id = DateTime.now().millisecondsSinceEpoch.toString();
   }
 }

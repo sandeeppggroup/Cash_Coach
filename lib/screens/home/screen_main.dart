@@ -45,12 +45,6 @@ class ScreenMain extends StatelessWidget {
                   } else if (selectedIndexNotifier.value == 1) {
                     print('Add Category');
                     showCategoryAddPopup(context);
-                    // final _sample = CategoryModel(
-                    //   id: DateTime.now().millisecondsSinceEpoch.toString(),
-                    //   name: 'Travel',
-                    //   type: CategoryType.expense,
-                    // );
-                    // CategoryDB().insertCategory(_sample);
                   }
                 },
                 child: const Icon(Icons.add),
