@@ -13,6 +13,7 @@ import 'package:money_management/screens/category/income_category_list.dart';
 import 'package:money_management/screens/drawer_pages/about.dart';
 import 'package:money_management/screens/drawer_pages/privacy_policy.dart';
 import 'package:money_management/screens/drawer_pages/terms.dart';
+import 'package:money_management/screens/edit_transaction/edit_transaction.dart';
 import 'package:money_management/screens/screen_splash/splash_two.dart';
 import 'package:money_management/screens/transaction/screen_transactions.dart';
 
@@ -341,37 +342,35 @@ class _ScreenHomeState extends State<ScreenHome> {
                   itemCount: newList.length,
                   // values
                   itemBuilder: (BuildContext context, int index) {
-                    final _value = newList[index];
-                    final _date = _value.date;
-                    final _formatedDate = DateFormat('dd-MMM').format(_date);
+                    final values = newList[index];
+                    final date = values.date;
+                    final formatedDate = DateFormat('dd-MMM').format(date);
                     return Slidable(
-                      key: Key(_value.id!),
+                      key: Key(values.id!),
                       startActionPane: ActionPane(
                         motion: const StretchMotion(),
                         children: [
                           SlidableAction(
-                            borderRadius: BorderRadius.circular(30),
-                            padding: EdgeInsets.all(8),
-                            backgroundColor: Color.fromARGB(255, 4, 78, 207),
-                            foregroundColor: Colors.white,
-                            icon: IconlyLight.edit,
-                            label: 'Edit',
-                            onPressed: (context) {
-                              final model = TransactionModel(
-                                  discription: _value.discription,
-                                  amount: _value.amount,
-                                  date: _value.date,
-                                  category: _value.category,
-                                  type: _value.type,
-                                  id: _value.id);
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => EditTransaction(
-                              //               model: model,
-                              //             )));
-                            },
-                          ),
+                              borderRadius: BorderRadius.circular(30),
+                              padding: EdgeInsets.all(8),
+                              backgroundColor: Color.fromARGB(255, 4, 78, 207),
+                              foregroundColor: Colors.white,
+                              icon: IconlyLight.edit,
+                              label: 'Edit',
+                              onPressed: (context) {
+                                final model = TransactionModel(
+                                    discription: values.discription,
+                                    amount: values.amount,
+                                    date: values.date,
+                                    category: values.category,
+                                    type: values.type,
+                                    id: values.id);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            EditTransaction(model: model)));
+                              }),
                           SlidableAction(
                             borderRadius: BorderRadius.circular(30),
                             spacing: 8,
@@ -380,7 +379,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                             icon: IconlyLight.delete,
                             label: 'Delete',
                             onPressed: (context) {
-                              _value.id;
+                              values.id;
 
                               showDialog(
                                 context: context,
@@ -398,7 +397,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                                       TextButton(
                                           onPressed: () {
                                             TransactionDB.instance
-                                                .deleteTransaction(_value.id!);
+                                                .deleteTransaction(index);
                                             Navigator.of(context).pop();
                                           },
                                           child: const Text('Ok'))
@@ -416,8 +415,8 @@ class _ScreenHomeState extends State<ScreenHome> {
                             borderRadius: BorderRadius.circular(15)),
                         child: ListTile(
                           leading: Text(
-                            parseDate(_value.date),
-                            style: TextStyle(
+                            parseDate(values.date),
+                            style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.black),
@@ -425,21 +424,21 @@ class _ScreenHomeState extends State<ScreenHome> {
                           trailing: Column(
                             children: [
                               Text(
-                                ' ${_value.category.name}',
+                                ' ${values.category.name}',
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w500,
-                                  color: _value.type == CategoryType.income
+                                  color: values.type == CategoryType.income
                                       ? Colors.green
                                       : Colors.red,
                                 ),
                               ),
                               Text(
-                                "₹ ${_value.amount}",
+                                "₹ ${values.amount}",
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500,
-                                  color: _value.type == CategoryType.income
+                                  color: values.type == CategoryType.income
                                       ? Colors.green
                                       : Colors.red,
                                 ),

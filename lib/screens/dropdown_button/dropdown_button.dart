@@ -21,15 +21,16 @@ class _DropdownButtonWidgeState extends State<DropdownButtonWidge> {
         //   borderRadius: BorderRadius.circular(30.0),
         // ),
         child: DropdownButton<String>(
+          underline: Container(),
           elevation: 0,
           borderRadius: BorderRadius.circular(20),
           style: const TextStyle(
             color: Colors.black,
           ),
-          // Step 3.
+
           value: dropdownValue,
-          // Step 4.
-          items: <String>['', 'Income', 'Expense', 'All']
+
+          items: <String>['', 'All', 'Today', 'Yesterday', 'Week', 'Month']
               .map<DropdownMenuItem<String>>(
             (String value) {
               return DropdownMenuItem<String>(

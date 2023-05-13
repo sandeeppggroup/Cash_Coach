@@ -8,14 +8,18 @@ import 'package:money_management/db_functions/transactions/transaction_db.dart';
 import 'package:money_management/models/category/category_model.dart';
 import 'package:money_management/models/transaction/transaction_model.dart';
 
-class AddTransaction extends StatefulWidget {
-  const AddTransaction({super.key});
+class EditTransaction extends StatefulWidget {
+  const EditTransaction({
+    super.key,
+    required this.model,
+  });
+  final TransactionModel model;
 
   @override
-  State<AddTransaction> createState() => _AddTransactionState();
+  State<EditTransaction> createState() => _EditTransactionState();
 }
 
-class _AddTransactionState extends State<AddTransaction> {
+class _EditTransactionState extends State<EditTransaction> {
   final _amountController = TextEditingController();
 
   final _categoryController = TextEditingController();
@@ -39,6 +43,11 @@ class _AddTransactionState extends State<AddTransaction> {
   @override
   void initState() {
     _selectedCategoryType = CategoryType.income;
+    _discriptionController.text = widget.model.discription;
+    _amountController.text = widget.model.amount.toString();
+    _selectedDate = widget.model.date;
+    _selectedCategoryType = widget.model.type;
+    _selectedCategoryModel = widget.model.category;
     super.initState();
   }
 
@@ -80,6 +89,9 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
                 controller: _amountController,
                 keyboardType: TextInputType.number,
+                // inputFormatters: <TextInputFormatter>[
+                //   FilteringTextInputFormatter.digitsOnly,
+                // ],
                 onChanged: (value) {
                   _inputValue == value;
                 },
@@ -88,9 +100,9 @@ class _AddTransactionState extends State<AddTransaction> {
                     return 'Please enter amount';
                   }
                   // Ensure input contains only digits and at most one decimal point
-                  final RegExp regex = RegExp(r'^.');
+                  final RegExp regex = RegExp(r'^\d*\.?\d*$');
                   if (!regex.hasMatch(value)) {
-                    return 'Input must contain only numbers';
+                    return 'Input must contain only numbers and at most one decimal point';
                   }
 
                   // Ensure input is a valid decimal value
@@ -271,7 +283,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 width: 340,
                 child: ElevatedButton(
                   onPressed: () {
-                    addTransactionOnclicked();
+                    editTransactionOnclicked();
 
                     _amountController.clear();
 
@@ -315,7 +327,7 @@ class _AddTransactionState extends State<AddTransaction> {
     }
   }
 
-  Future<void> addTransactionOnclicked() async {
+  Future<void> editTransactionOnclicked() async {
     final amountText = _amountController.text;
     final discriptionText = _discriptionController.text;
 
@@ -362,8 +374,8 @@ class _AddTransactionState extends State<AddTransaction> {
         date: _selectedDate!,
         type: _selectedCategoryType!,
         category: _selectedCategoryModel!,
-        id: DateTime.now().millisecondsSinceEpoch.toString());
-    await TransactionDB.instance.addTransaction(model);
+        id: widget.model.id);
+    await TransactionDB.instance.editTransaction(model);
     Navigator.of(context).pop();
     TransactionDB.instance.refresh();
   }

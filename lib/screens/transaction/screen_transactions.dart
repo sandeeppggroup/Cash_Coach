@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_management/screens/dropdown_button/dropdown_button.dart';
+import 'package:money_management/screens/home/screen_home.dart';
+import 'package:money_management/screens/home/screen_main.dart';
 
 import '../../db_functions/category/category_db.dart';
 
@@ -32,6 +34,16 @@ class _ScreenTransactionsState extends State<ScreenTransactions>
     var dropdownValue;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => ScreenMain()));
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              size: 30,
+            )),
         backgroundColor: const Color.fromARGB(255, 4, 78, 207),
         centerTitle: true,
         title: const Text(
@@ -72,13 +84,13 @@ class _ScreenTransactionsState extends State<ScreenTransactions>
                   controller: _tabController,
                   tabs: const [
                     Tab(
+                      text: 'Overview',
+                    ),
+                    Tab(
                       text: 'Income',
                     ),
                     Tab(
                       text: 'Expense',
-                    ),
-                    Tab(
-                      text: 'All',
                     ),
                   ],
                 ),
@@ -87,19 +99,22 @@ class _ScreenTransactionsState extends State<ScreenTransactions>
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Card(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                    Text(
-                      'Select',
-                      style: TextStyle(fontSize: 17),
-                    ),
-                    SizedBox(
-                      width: 120,
-                      height: 40,
-                      child: DropdownButtonWidge(),
-                    ),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        'Sort',
+                        style: TextStyle(fontSize: 17),
+                      ),
+                      SizedBox(
+                        width: 120,
+                        height: 35,
+                        child: DropdownButtonWidge(),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
