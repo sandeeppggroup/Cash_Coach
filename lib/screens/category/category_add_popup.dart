@@ -46,11 +46,11 @@ Future<void> showCategoryAddPopup(BuildContext context) async {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 40, left: 10),
+            const Padding(
+              padding: EdgeInsets.only(right: 40, left: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   RadioButton(title: 'Income', type: CategoryType.income),
                   RadioButton(title: 'Expense', type: CategoryType.expense),
                 ],
@@ -62,17 +62,17 @@ Future<void> showCategoryAddPopup(BuildContext context) async {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState?.save();
-                    final _name = _nameEditingController.text;
-                    if (_name.isEmpty) {
+                    final name = _nameEditingController.text;
+                    if (name.isEmpty) {
                       return;
                     }
-                    final _type = selectedCategoryNotifier.value;
-                    final _category = CategoryModel(
+                    final type = selectedCategoryNotifier.value;
+                    final category = CategoryModel(
                       id: DateTime.now().millisecondsSinceEpoch.toString(),
-                      name: _name,
-                      type: _type,
+                      name: name,
+                      type: type,
                     );
-                    CategoryDB.instance.insertCategory(_category);
+                    CategoryDB.instance.insertCategory(category);
                     Navigator.of(ctx).pop();
                   }
                 },
