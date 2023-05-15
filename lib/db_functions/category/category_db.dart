@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:money_management/models/category/category_model.dart';
@@ -50,6 +52,7 @@ class CategoryDB implements CategoryDbFunctions {
         }
       },
     );
+
     incomeCategoryListListener.notifyListeners();
     expenseCategoryListListener.notifyListeners();
   }
@@ -60,12 +63,11 @@ class CategoryDB implements CategoryDbFunctions {
     await _categoryDB.delete(categoryID);
     refreshUI();
   }
-  
-  @override
-  Future<void> editCategory(CategoryModel updatedCategory)async {
-    final _categoryDB = await Hive.openBox <CategoryModel>(CATEGORY_DB_NAME);
-    await _categoryDB.put(updatedCategory.id, updatedCategory);
-  refreshUI();
 
+  @override
+  Future<void> editCategory(CategoryModel updatedCategory) async {
+    final _categoryDB = await Hive.openBox<CategoryModel>(CATEGORY_DB_NAME);
+    await _categoryDB.put(updatedCategory.id, updatedCategory);
+    refreshUI();
   }
 }
