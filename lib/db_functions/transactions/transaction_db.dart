@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:money_management/models/category/category_model.dart';
+import 'package:money_management/account/balance.dart';
 import 'package:money_management/models/transaction/transaction_model.dart';
 
 const TRANSACTION_DB_NAME = 'transaction-db';
@@ -26,39 +26,42 @@ class TransactionDB implements TransactionDbFunctions {
 
   @override
   Future<void> addTransaction(TransactionModel obj) async {
-    final _transactionDB =
+    final transactionDB =
         await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
-    await _transactionDB.put(obj.id, obj);
+    await transactionDB.put(obj.id, obj);
+    refresh();
   }
 
   Future<void> refresh() async {
-    final _list = await getAllTransaction();
-    _list.sort((first, second) => second.date.compareTo(first.date));
+    final list = await getAllTransaction();
+    list.sort((first, second) => second.date.compareTo(first.date));
     transactionListNOtifier.value.clear();
-    transactionListNOtifier.value.addAll(_list);
+    transactionListNOtifier.value.addAll(list);
+    balanceAmount();
     transactionListNOtifier.notifyListeners();
   }
 
   @override
   Future<List<TransactionModel>> getAllTransaction() async {
-    final _transactionDB =
+    final transactionDB =
         await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
-    return _transactionDB.values.toList();
+
+    return transactionDB.values.toList();
   }
 
   @override
   Future<void> deleteTransaction(int id) async {
-    final _transactionDB =
+    final transactionDB =
         await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
-    await _transactionDB.deleteAt(id);
+    await transactionDB.deleteAt(id);
     refresh();
   }
 
   @override
   Future<void> editTransaction(TransactionModel model) async {
-    final _transactionDB =
+    final transactionDB =
         await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
-    await _transactionDB.put(model.id, model);
+    await transactionDB.put(model.id, model);
     refresh();
   }
 }

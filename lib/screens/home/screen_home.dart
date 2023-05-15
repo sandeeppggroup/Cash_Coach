@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
+import 'package:money_management/account/balance.dart';
 import 'package:money_management/db_functions/category/category_db.dart';
 import 'package:money_management/db_functions/transactions/transaction_db.dart';
 import 'package:money_management/models/category/category_model.dart';
@@ -25,8 +26,14 @@ class ScreenHome extends StatefulWidget {
 }
 
 class _ScreenHomeState extends State<ScreenHome> {
+  void initState() {
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     TransactionDB.instance.refresh();
+
+    balanceAmount();
     CategoryDB.instance.refreshUI();
     return Scaffold(
       appBar: AppBar(
@@ -193,14 +200,19 @@ class _ScreenHomeState extends State<ScreenHome> {
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
+                    children: [
                       Text(
                         'Current balance',
                         style: TextStyle(color: Colors.white),
                       ),
-                      Text(
-                        '₹35000.00',
-                        style: TextStyle(color: Colors.white, fontSize: 35),
+                      ValueListenableBuilder(
+                        valueListenable: totalNotifier,
+                        builder: (context, value, child) {
+                          return Text(
+                            totalNotifier.value.toString(),
+                            style: TextStyle(color: Colors.white, fontSize: 35),
+                          );
+                        },
                       )
                     ],
                   ),
@@ -229,7 +241,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
+                              children: [
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -241,10 +253,15 @@ class _ScreenHomeState extends State<ScreenHome> {
                                 SizedBox(
                                   height: 5,
                                 ),
-                                Text(
-                                  '₹50000',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 22),
+                                ValueListenableBuilder(
+                                  valueListenable: incomeNotifier,
+                                  builder: (context, value, child) {
+                                    return Text(
+                                      incomeNotifier.value.toString(),
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 22),
+                                    );
+                                  },
                                 ),
                               ],
                             )
@@ -275,7 +292,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                                 ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
+                                  children: [
                                     SizedBox(
                                       height: 10,
                                     ),
@@ -287,10 +304,16 @@ class _ScreenHomeState extends State<ScreenHome> {
                                     SizedBox(
                                       height: 5,
                                     ),
-                                    Text(
-                                      '₹50000',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 22),
+                                    ValueListenableBuilder(
+                                      valueListenable: expenseNotifier,
+                                      builder: (context, value, child) {
+                                        return Text(
+                                          expenseNotifier.value.toString(),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 22),
+                                        );
+                                      },
                                     )
                                   ],
                                 )
@@ -346,7 +369,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                     final date = values.date;
                     final formatedDate = DateFormat('dd-MMM').format(date);
                     return Slidable(
-                      key: Key(values.id!),
+                      key: Key(values.id?.toString() ?? ''),
                       startActionPane: ActionPane(
                         motion: const StretchMotion(),
                         children: [
@@ -409,41 +432,57 @@ class _ScreenHomeState extends State<ScreenHome> {
                           )
                         ],
                       ),
-                      child: Card(
-                        elevation: 20,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)),
-                        child: ListTile(
-                          leading: Text(
-                            parseDate(values.date),
-                            style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          ),
-                          trailing: Column(
-                            children: [
-                              Text(
-                                ' ${values.category.name}',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                  color: values.type == CategoryType.income
-                                      ? Colors.green
-                                      : Colors.red,
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(left: 8, right: 8, bottom: 5),
+                        child: Container(
+                          height: 77,
+                          child: Card(
+                            color: const Color.fromARGB(255, 4, 78, 207),
+                            elevation: 10,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Center(
+                              child: ListTile(
+                                title: Padding(
+                                  padding: const EdgeInsets.only(left: 30),
+                                  child: Text(
+                                    ' ${values.category.name}',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: values.type == CategoryType.income
+                                          ? Colors.white
+                                          : Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                leading: CircleAvatar(
+                                  radius: 28,
+                                  backgroundColor:
+                                      values.type == CategoryType.income
+                                          ? Colors.green
+                                          : Colors.red,
+                                  child: Text(
+                                    parseDate(values.date),
+                                    style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                                trailing: Text(
+                                  "₹ ${values.amount}",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                    color: values.type == CategoryType.income
+                                        ? Colors.white
+                                        : Colors.white,
+                                  ),
                                 ),
                               ),
-                              Text(
-                                "₹ ${values.amount}",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                  color: values.type == CategoryType.income
-                                      ? Colors.green
-                                      : Colors.red,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
@@ -461,6 +500,6 @@ class _ScreenHomeState extends State<ScreenHome> {
   String parseDate(DateTime date) {
     final date0 = DateFormat.MMMd().format(date);
     final splitedDate = date0.split(' ');
-    return '${splitedDate.last}\n${splitedDate.first}';
+    return '  ${splitedDate.last} \n ${splitedDate.first}';
   }
 }
