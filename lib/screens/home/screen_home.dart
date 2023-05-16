@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
@@ -9,13 +7,10 @@ import 'package:money_management/db_functions/category/category_db.dart';
 import 'package:money_management/db_functions/transactions/transaction_db.dart';
 import 'package:money_management/models/category/category_model.dart';
 import 'package:money_management/models/transaction/transaction_model.dart';
-import 'package:money_management/screens/add_transactions/add_transactions.dart';
-import 'package:money_management/screens/category/income_category_list.dart';
 import 'package:money_management/screens/drawer_pages/about.dart';
 import 'package:money_management/screens/drawer_pages/privacy_policy.dart';
 import 'package:money_management/screens/drawer_pages/terms.dart';
 import 'package:money_management/screens/edit_transaction/edit_transaction.dart';
-import 'package:money_management/screens/screen_splash/splash_two.dart';
 import 'package:money_management/screens/transaction/screen_transactions.dart';
 
 class ScreenHome extends StatefulWidget {
@@ -26,10 +21,12 @@ class ScreenHome extends StatefulWidget {
 }
 
 class _ScreenHomeState extends State<ScreenHome> {
+  @override
   void initState() {
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
     TransactionDB.instance.refresh();
 
@@ -68,8 +65,8 @@ class _ScreenHomeState extends State<ScreenHome> {
               ),
             ),
             ListTile(
-              title: Row(
-                children: const [
+              title: const Row(
+                children: [
                   Icon(Icons.person),
                   SizedBox(
                     width: 20,
@@ -85,8 +82,8 @@ class _ScreenHomeState extends State<ScreenHome> {
               },
             ),
             ListTile(
-              title: Row(
-                children: const [
+              title: const Row(
+                children: [
                   Icon(Icons.restore_page_outlined),
                   SizedBox(
                     width: 20,
@@ -99,8 +96,8 @@ class _ScreenHomeState extends State<ScreenHome> {
               },
             ),
             ListTile(
-              title: Row(
-                children: const [
+              title: const Row(
+                children: [
                   Icon(Icons.share),
                   SizedBox(
                     width: 20,
@@ -113,8 +110,8 @@ class _ScreenHomeState extends State<ScreenHome> {
               },
             ),
             ListTile(
-              title: Row(
-                children: const [
+              title: const Row(
+                children: [
                   Icon(Icons.money_outlined),
                   SizedBox(
                     width: 20,
@@ -131,8 +128,8 @@ class _ScreenHomeState extends State<ScreenHome> {
               },
             ),
             ListTile(
-              title: Row(
-                children: const [
+              title: const Row(
+                children: [
                   Icon(Icons.privacy_tip),
                   SizedBox(
                     width: 20,
@@ -149,8 +146,8 @@ class _ScreenHomeState extends State<ScreenHome> {
               },
             ),
             ListTile(
-              title: Row(
-                children: const [
+              title: const Row(
+                children: [
                   Icon(Icons.arrow_back),
                   SizedBox(
                     width: 20,
@@ -187,8 +184,8 @@ class _ScreenHomeState extends State<ScreenHome> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   ),
@@ -201,7 +198,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'Current balance',
                         style: TextStyle(color: Colors.white),
                       ),
@@ -210,7 +207,8 @@ class _ScreenHomeState extends State<ScreenHome> {
                         builder: (context, value, child) {
                           return Text(
                             totalNotifier.value.toString(),
-                            style: TextStyle(color: Colors.white, fontSize: 35),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 35),
                           );
                         },
                       )
@@ -242,15 +240,15 @@ class _ScreenHomeState extends State<ScreenHome> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
-                                Text(
+                                const Text(
                                   'Income',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 13),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 ValueListenableBuilder(
@@ -293,15 +291,15 @@ class _ScreenHomeState extends State<ScreenHome> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 10,
                                     ),
-                                    Text(
+                                    const Text(
                                       'Expenses',
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 13),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     ValueListenableBuilder(
@@ -309,7 +307,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                                       builder: (context, value, child) {
                                         return Text(
                                           expenseNotifier.value.toString(),
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 22),
                                         );
@@ -366,8 +364,6 @@ class _ScreenHomeState extends State<ScreenHome> {
                   // values
                   itemBuilder: (BuildContext context, int index) {
                     final values = newList[index];
-                    final date = values.date;
-                    final formatedDate = DateFormat('dd-MMM').format(date);
                     return Slidable(
                       key: Key(values.id?.toString() ?? ''),
                       startActionPane: ActionPane(
@@ -435,7 +431,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                       child: Padding(
                         padding:
                             const EdgeInsets.only(left: 8, right: 8, bottom: 5),
-                        child: Container(
+                        child: SizedBox(
                           height: 77,
                           child: Card(
                             color: const Color.fromARGB(255, 4, 78, 207),
@@ -464,7 +460,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                                           ? Colors.green
                                           : Colors.red,
                                   child: Text(
-                                    parseDate(values.date),
+                                    parseDateForHomeRecentTransaction(values.date),
                                     style: const TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w500,
@@ -497,7 +493,7 @@ class _ScreenHomeState extends State<ScreenHome> {
     );
   }
 
-  String parseDate(DateTime date) {
+  String parseDateForHomeRecentTransaction(DateTime date) {
     final date0 = DateFormat.MMMd().format(date);
     final splitedDate = date0.split(' ');
     return '  ${splitedDate.last} \n ${splitedDate.first}';

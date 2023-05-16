@@ -21,6 +21,10 @@ class _DropdownButtonWidgeState extends State<DropdownButtonWidge> {
         //   borderRadius: BorderRadius.circular(30.0),
         // ),
         child: DropdownButton<String>(
+          icon: Icon(
+            Icons.sort_rounded,
+            size: 25,
+          ),
           underline: Container(),
           elevation: 0,
           borderRadius: BorderRadius.circular(20),

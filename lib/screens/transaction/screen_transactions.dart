@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:money_management/db_functions/transactions/transaction_db.dart';
+import 'package:money_management/models/category/category_model.dart';
 import 'package:money_management/screens/dropdown_button/dropdown_button.dart';
 import 'package:money_management/screens/home/screen_home.dart';
 import 'package:money_management/screens/home/screen_main.dart';
 
 import '../../db_functions/category/category_db.dart';
+import '../../models/transaction/transaction_model.dart';
 
 class ScreenTransactions extends StatefulWidget {
   const ScreenTransactions({super.key});
@@ -70,43 +74,42 @@ class _ScreenTransactionsState extends State<ScreenTransactions>
                 ),
               ),
             ),
-            Container(
-              child: Card(
-                child: TabBar(
-                  indicator: BoxDecoration(
-                    color: const Color.fromARGB(255, 4, 78, 207),
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                  labelColor: Colors.white,
-                  labelStyle: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.w700),
-                  unselectedLabelColor: const Color.fromARGB(255, 4, 78, 207),
-                  controller: _tabController,
-                  tabs: const [
-                    Tab(
-                      text: 'Overview',
-                    ),
-                    Tab(
-                      text: 'Income',
-                    ),
-                    Tab(
-                      text: 'Expense',
-                    ),
-                  ],
+            Card(
+              child: TabBar(
+                indicator: BoxDecoration(
+                  color: const Color.fromARGB(255, 4, 78, 207),
+                  borderRadius: BorderRadius.circular(18),
                 ),
+                labelColor: Colors.white,
+                labelStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                unselectedLabelColor: const Color.fromARGB(255, 4, 78, 207),
+                controller: _tabController,
+                tabs: const [
+                  Tab(
+                    text: 'Overview',
+                  ),
+                  Tab(
+                    text: 'Income',
+                  ),
+                  Tab(
+                    text: 'Expense',
+                  ),
+                ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(5.0),
+                  padding: EdgeInsets.all(5.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
                         'Sort',
-                        style: TextStyle(fontSize: 17),
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.w800),
                       ),
                       SizedBox(
                         width: 120,
@@ -119,31 +122,64 @@ class _ScreenTransactionsState extends State<ScreenTransactions>
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: 20,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    child: ListTile(
-                      title: const Text('Shopping'),
-                      subtitle: const Text('Buy some grocery'),
-                      trailing: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Text(
-                            '-5120',
-                            style: TextStyle(color: Colors.red),
+              child: ValueListenableBuilder(
+                  valueListenable:
+                      TransactionDB.instance.transactionListNOtifier,
+                  builder: (BuildContext context,
+                      List<TransactionModel> newList, Widget? _) {
+                    return ListView.builder(
+                      itemCount: newList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final values = newList[index];
+                        return Card(
+                          child: ListTile(
+                            title: Text(
+                              values.category.name,
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w600),
+                            ),
+                            subtitle: Text(
+                              values.discription,
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w600),
+                            ),
+                            trailing: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  '₹${values.amount}',
+                                  style: TextStyle(
+                                    color: values.type == CategoryType.income
+                                        ? Colors.green
+                                        : Colors.red,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                Text(
+                                  parseDateForTransactionList(values.date),
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ],
+                            ),
                           ),
-                          Text('data')
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
+                        );
+                      },
+                    );
+                  }),
             ),
           ],
         ),
       ),
     );
+  }
+
+  String parseDateForTransactionList(DateTime date) {
+    final date0 = DateFormat.MMMd().format(date);
+    final splitedDate = date0.split(' ');
+    return '  ${splitedDate.last} ${splitedDate.first}';
   }
 }
