@@ -8,8 +8,7 @@ ValueNotifier<CategoryType> selectedCategoryNotifier =
     ValueNotifier(CategoryType.income);
 
 Future<void> showCategoryAddPopup(BuildContext context) async {
-  final _nameEditingController = TextEditingController();
-  String? _inputValue;
+  final nameEditingController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   showDialog(
@@ -34,10 +33,7 @@ Future<void> showCategoryAddPopup(BuildContext context) async {
                   }
                   return null;
                 },
-                onSaved: (value) {
-                  _inputValue = value;
-                },
-                controller: _nameEditingController,
+                controller: nameEditingController,
                 decoration: InputDecoration(
                   hintText: 'Category Name',
                   border: OutlineInputBorder(
@@ -62,14 +58,29 @@ Future<void> showCategoryAddPopup(BuildContext context) async {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState?.save();
-                    final name = _nameEditingController.text;
-                    if (name.isEmpty) {
+                    final categoryName = nameEditingController.text;
+
+                    final check = selectedCategoryNotifier.value ==
+                            CategoryType.income
+                        ? CategoryDB.instance.incomeCategoryListListener.value
+                            .where((element) {
+                            return element.name.contains(categoryName);
+                          })
+                        : CategoryDB.instance.expenseCategoryListListener.value
+                            .where((element) {
+                            return element.name.contains(categoryName);
+                          });
+
+                    if (check.isNotEmpty) {
+                      return;
+                    }
+                    if (categoryName.isEmpty) {
                       return;
                     }
                     final type = selectedCategoryNotifier.value;
                     final category = CategoryModel(
                       id: DateTime.now().millisecondsSinceEpoch.toString(),
-                      name: name,
+                      name: categoryName,
                       type: type,
                     );
                     CategoryDB.instance.insertCategory(category);

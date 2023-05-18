@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:iconly/iconly.dart';
@@ -65,11 +67,11 @@ class _ScreenHomeState extends State<ScreenHome> {
               ),
             ),
             ListTile(
-              title: const Row(
+              title: Row(
                 children: [
                   Icon(Icons.person),
                   SizedBox(
-                    width: 20,
+                    width: MediaQuery.of(context).size.width * 0.03,
                   ),
                   Text('About'),
                 ],
@@ -82,13 +84,13 @@ class _ScreenHomeState extends State<ScreenHome> {
               },
             ),
             ListTile(
-              title: const Row(
+              title: Row(
                 children: [
-                  Icon(Icons.restore_page_outlined),
+                  const Icon(Icons.restore_page_outlined),
                   SizedBox(
-                    width: 20,
+                    width: MediaQuery.of(context).size.width * 0.03,
                   ),
-                  Text('Reset'),
+                  const Text('Reset'),
                 ],
               ),
               onTap: () {
@@ -96,13 +98,13 @@ class _ScreenHomeState extends State<ScreenHome> {
               },
             ),
             ListTile(
-              title: const Row(
+              title: Row(
                 children: [
-                  Icon(Icons.share),
+                  const Icon(Icons.share),
                   SizedBox(
-                    width: 20,
+                    width: MediaQuery.of(context).size.width * 0.03,
                   ),
-                  Text('Share'),
+                  const Text('Share'),
                 ],
               ),
               onTap: () {
@@ -110,13 +112,13 @@ class _ScreenHomeState extends State<ScreenHome> {
               },
             ),
             ListTile(
-              title: const Row(
+              title: Row(
                 children: [
-                  Icon(Icons.money_outlined),
+                  const Icon(Icons.money_outlined),
                   SizedBox(
-                    width: 20,
+                    width: MediaQuery.of(context).size.width * 0.03,
                   ),
-                  Text('Terms and conditions'),
+                  const Text('Terms and conditions'),
                 ],
               ),
               onTap: () {
@@ -128,13 +130,13 @@ class _ScreenHomeState extends State<ScreenHome> {
               },
             ),
             ListTile(
-              title: const Row(
+              title: Row(
                 children: [
-                  Icon(Icons.privacy_tip),
+                  const Icon(Icons.privacy_tip),
                   SizedBox(
-                    width: 20,
+                    width: MediaQuery.of(context).size.width * 0.03,
                   ),
-                  Text('Privacy policy'),
+                  const Text('Privacy policy'),
                 ],
               ),
               onTap: () {
@@ -146,11 +148,11 @@ class _ScreenHomeState extends State<ScreenHome> {
               },
             ),
             ListTile(
-              title: const Row(
+              title: Row(
                 children: [
                   Icon(Icons.arrow_back),
                   SizedBox(
-                    width: 20,
+                    width: MediaQuery.of(context).size.width * 0.03,
                   ),
                   Text('Back to app'),
                 ],
@@ -159,8 +161,8 @@ class _ScreenHomeState extends State<ScreenHome> {
                 Navigator.pop(context);
               },
             ),
-            const SizedBox(
-              height: 120,
+            SizedBox(
+              height: MediaQuery.of(context).size.height * .18,
             ),
             const Center(
               child: Text(
@@ -174,7 +176,7 @@ class _ScreenHomeState extends State<ScreenHome> {
       body: Column(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.35,
+            height: MediaQuery.of(context).size.height * 0.325,
             // width: MediaQuery.of(context).size.width * 0.7,
             decoration: const BoxDecoration(
                 color: Color.fromARGB(255, 3, 20, 114),
@@ -190,8 +192,8 @@ class _ScreenHomeState extends State<ScreenHome> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   ),
                 ),
-                const SizedBox(
-                  height: 15,
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.001,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -200,7 +202,10 @@ class _ScreenHomeState extends State<ScreenHome> {
                     children: [
                       const Text(
                         'Current balance',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontWeight: FontWeight.w700),
                       ),
                       ValueListenableBuilder(
                         valueListenable: totalNotifier,
@@ -208,13 +213,16 @@ class _ScreenHomeState extends State<ScreenHome> {
                           return Text(
                             totalNotifier.value.toString(),
                             style: const TextStyle(
-                                color: Colors.white, fontSize: 35),
+                                color: Colors.white,
+                                fontSize: 35,
+                                fontWeight: FontWeight.w500),
                           );
                         },
-                      )
+                      ),
                     ],
                   ),
                 ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -229,27 +237,34 @@ class _ScreenHomeState extends State<ScreenHome> {
                         ),
                         child: Row(
                           children: [
-                            const Padding(
+                            Padding(
                               padding: EdgeInsets.all(6.0),
-                              child: Icon(
-                                Icons.arrow_downward,
-                                color: Colors.white,
-                                size: 40,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.green,
+                                child: Icon(
+                                  Icons.arrow_downward,
+                                  color: Colors.white,
+                                  size: MediaQuery.of(context).size.width * 0.1,
+                                ),
                               ),
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const SizedBox(
-                                  height: 10,
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.02,
                                 ),
                                 const Text(
                                   'Income',
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 13),
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700),
                                 ),
-                                const SizedBox(
-                                  height: 5,
+                                SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.005,
                                 ),
                                 ValueListenableBuilder(
                                   valueListenable: incomeNotifier,
@@ -280,27 +295,37 @@ class _ScreenHomeState extends State<ScreenHome> {
                           children: [
                             Row(
                               children: [
-                                const Padding(
+                                Padding(
                                   padding: EdgeInsets.all(6.0),
-                                  child: Icon(
-                                    Icons.arrow_upward,
-                                    color: Colors.white,
-                                    size: 40,
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.red,
+                                    child: Icon(
+                                      Icons.arrow_upward,
+                                      color: Colors.white,
+                                      size: MediaQuery.of(context).size.width *
+                                          0.1,
+                                    ),
                                   ),
                                 ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const SizedBox(
-                                      height: 10,
+                                    SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.02,
                                     ),
                                     const Text(
                                       'Expenses',
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 13),
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w700),
                                     ),
-                                    const SizedBox(
-                                      height: 5,
+                                    SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.005,
                                     ),
                                     ValueListenableBuilder(
                                       valueListenable: expenseNotifier,
@@ -326,8 +351,8 @@ class _ScreenHomeState extends State<ScreenHome> {
               ],
             ),
           ),
-          const SizedBox(
-            height: 10,
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.001,
           ),
           Padding(
             padding: const EdgeInsets.all(10.0),
@@ -336,19 +361,19 @@ class _ScreenHomeState extends State<ScreenHome> {
               children: [
                 const Text(
                   'Recent transactions',
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 ),
                 TextButton(
                   onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ScreenTransactions(),
+                          builder: (context) => Screen_Transaction(),
                         ));
                   },
                   child: const Text(
                     'View all',
-                    style: TextStyle(fontSize: 17),
+                    style: TextStyle(fontSize: 18),
                   ),
                 ),
               ],
@@ -370,9 +395,10 @@ class _ScreenHomeState extends State<ScreenHome> {
                         motion: const StretchMotion(),
                         children: [
                           SlidableAction(
-                              borderRadius: BorderRadius.circular(30),
-                              padding: EdgeInsets.all(8),
-                              backgroundColor: Color.fromARGB(255, 4, 78, 207),
+                              spacing: 8,
+                              flex: 5,
+                              borderRadius: BorderRadius.circular(40),
+                              backgroundColor: Colors.blue,
                               foregroundColor: Colors.white,
                               icon: IconlyLight.edit,
                               label: 'Edit',
@@ -391,9 +417,10 @@ class _ScreenHomeState extends State<ScreenHome> {
                                             EditTransaction(model: model)));
                               }),
                           SlidableAction(
-                            borderRadius: BorderRadius.circular(30),
+                            borderRadius: BorderRadius.circular(40),
+                            flex: 4,
                             spacing: 8,
-                            backgroundColor: Color.fromARGB(255, 4, 78, 207),
+                            backgroundColor: Colors.pink,
                             foregroundColor: Colors.white,
                             icon: IconlyLight.delete,
                             label: 'Delete',
@@ -432,7 +459,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                         padding:
                             const EdgeInsets.only(left: 8, right: 8, bottom: 5),
                         child: SizedBox(
-                          height: 77,
+                          height: MediaQuery.of(context).size.height * 0.09,
                           child: Card(
                             color: const Color.fromARGB(255, 4, 78, 207),
                             elevation: 10,
@@ -460,7 +487,8 @@ class _ScreenHomeState extends State<ScreenHome> {
                                           ? Colors.green
                                           : Colors.red,
                                   child: Text(
-                                    parseDateForHomeRecentTransaction(values.date),
+                                    parseDateForHomeRecentTransaction(
+                                        values.date),
                                     style: const TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w500,
