@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:money_management/db_functions/category/category_db.dart';
-import 'package:money_management/models/category/category_model.dart';
-import 'package:money_management/screens/Statistics/screen_statistics.dart';
 import 'package:money_management/screens/add_transactions/add_transactions.dart';
 import 'package:money_management/screens/category/category_add_popup.dart';
 import 'package:money_management/screens/category/screen_category.dart';
 import 'package:money_management/screens/home/screen_home.dart';
 import 'package:money_management/screens/home/widgets/bottom_navigation.dart';
+import 'package:money_management/screens/statistics/screen_statistics.dart';
 import 'package:money_management/screens/transaction/screen_transactions.dart';
 
 class ScreenMain extends StatelessWidget {
@@ -16,7 +14,7 @@ class ScreenMain extends StatelessWidget {
     ScreenHome(),
     const ScreenCategory(),
     const Screen_Transaction(),
-    const ScreenStatistics()
+    Statistics_Screen()
   ];
 
   @override

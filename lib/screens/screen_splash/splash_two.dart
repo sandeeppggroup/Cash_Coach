@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:money_management/screens/home/screen_home.dart';
+import 'package:lottie/lottie.dart';
 import 'package:money_management/screens/home/screen_main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ScreenSplashTwo extends StatefulWidget {
   ScreenSplashTwo({super.key});
@@ -10,29 +11,26 @@ class ScreenSplashTwo extends StatefulWidget {
 }
 
 class _ScreenSplashTwoState extends State<ScreenSplashTwo> {
-  final _nameController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
+          
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Form(
-            key: _formKey,
             child: Column(
               children: [
                 Container(
                   decoration: const BoxDecoration(
-                    color: Colors.amber,
+                    color: Colors.white,
                   ),
-                  child: Image.asset('images/money-management.png'),
+                  child: Lottie.asset('images/lottie2.json'),
                 ),
                 const SizedBox(
-                  height: 2,
+                  height: 100,
                 ),
                 const Text(
                   "Simple solution",
@@ -55,34 +53,6 @@ class _ScreenSplashTwoState extends State<ScreenSplashTwo> {
                 const SizedBox(
                   height: 20,
                 ),
-                TextFormField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    labelText: "Enter Your Name",
-                    labelStyle: TextStyle(fontStyle: FontStyle.italic),
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25.0),
-                      borderSide: const BorderSide(
-                          color: Colors.green,
-                          width: 33,
-                          style: BorderStyle.none),
-                    ),
-                    //fillColor: Colors.green
-                  ),
-                  onChanged: (String value) {},
-                  validator: (val) {
-                    if (val!.isEmpty) {
-                      return "Field cannot be empty ......";
-                    } else {
-                      return null;
-                    }
-                  },
-                  keyboardType: TextInputType.name,
-                  style: const TextStyle(
-                    fontFamily: "Poppins",
-                  ),
-                ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -90,11 +60,16 @@ class _ScreenSplashTwoState extends State<ScreenSplashTwo> {
                   width: 200,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {
-                      checkName();
-                      _nameController.clear();
+                    onPressed: () async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setBool('check', true);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return ScreenMain();
+                      }));
                     },
-                    child: const Text('Countinue'),
+                    child: const Text('Continue'),
                   ),
                 ),
               ],
@@ -103,30 +78,5 @@ class _ScreenSplashTwoState extends State<ScreenSplashTwo> {
         ),
       ),
     );
-  }
-
-  Future<void> checkName() async {
-    final name = _nameController.text;
-    print(name);
-    if (name != '') {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) {
-            return ScreenMain();
-          },
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter your name'),
-          duration: Duration(seconds: 3),
-          margin: EdgeInsets.all(20),
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.red,
-        ),
-      );
-      // setState(() {});
-    }
   }
 }

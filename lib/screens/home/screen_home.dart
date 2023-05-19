@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:money_management/account/balance.dart';
@@ -13,7 +14,9 @@ import 'package:money_management/screens/drawer_pages/about.dart';
 import 'package:money_management/screens/drawer_pages/privacy_policy.dart';
 import 'package:money_management/screens/drawer_pages/terms.dart';
 import 'package:money_management/screens/edit_transaction/edit_transaction.dart';
+import 'package:money_management/screens/screen_splash/splash_two.dart';
 import 'package:money_management/screens/transaction/screen_transactions.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ScreenHome extends StatefulWidget {
   const ScreenHome({super.key});
@@ -94,7 +97,49 @@ class _ScreenHomeState extends State<ScreenHome> {
                 ],
               ),
               onTap: () {
-                Navigator.pop(context);
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Delete'),
+                        content: Text(
+                            'Are you sure?Do you want to reset entire data'),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('Cancel')),
+                          TextButton(
+                              onPressed: () async {
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                await prefs.clear();
+                                SharedPreferences tectcontrol =
+                                    await SharedPreferences.getInstance();
+                                await tectcontrol.clear();
+                                final transationDb =
+                                    await Hive.openBox<TransactionModel>(
+                                        'transactio-db');
+                                final categorydb =
+                                    await Hive.openBox<CategoryModel>(
+                                        'category_database');
+
+                                categorydb.clear();
+                                transationDb.clear();
+                                incomeNotifier = ValueNotifier(0);
+                                expenseNotifier = ValueNotifier(0);
+                                totalNotifier = ValueNotifier(0);
+
+                                Navigator.of(context)
+                                    .pushReplacement(MaterialPageRoute(
+                                  builder: (context) => ScreenSplashTwo(),
+                                ));
+                              },
+                              child: Text('Ok'))
+                        ],
+                      );
+                    });
               },
             ),
             ListTile(

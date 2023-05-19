@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:money_management/db_functions/category/category_db.dart';
 import 'package:money_management/models/category/category_model.dart';
 import 'package:money_management/models/transaction/transaction_model.dart';
+import 'package:money_management/screens/screen_splash/splash_one.dart';
 
 import 'package:money_management/screens/screen_splash/splash_two.dart';
 
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
       title: 'Money Management',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: ScreenSplashTwo(),
+      home: Splash_One(),
     );
   }
 }

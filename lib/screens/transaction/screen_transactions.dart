@@ -39,15 +39,15 @@
 //     return Scaffold(
 //       appBar: AppBar(
 //         automaticallyImplyLeading: false,
-//         leading: IconButton(
-//             onPressed: () {
-//               Navigator.pushReplacement(context,
-//                   MaterialPageRoute(builder: (context) => ScreenMain()));
-//             },
-//             icon: Icon(
-//               Icons.arrow_back,
-//               size: 30,
-//             )),
+// leading: IconButton(
+//     onPressed: () {
+//       Navigator.pushReplacement(context,
+//           MaterialPageRoute(builder: (context) => ScreenMain()));
+//     },
+//     icon: Icon(
+//       Icons.arrow_back,
+//       size: 30,
+//     )),
 //         backgroundColor: const Color.fromARGB(255, 4, 78, 207),
 //         centerTitle: true,
 //         title: const Text(
@@ -197,6 +197,7 @@ import 'package:money_management/db_functions/transactions/transaction_db.dart';
 import 'package:money_management/screens/transaction/transactionlist_view.dart';
 
 import '../../../models/transaction/transaction_model.dart';
+import '../home/screen_main.dart';
 
 class Screen_Transaction extends StatefulWidget {
   const Screen_Transaction({super.key});
@@ -297,6 +298,15 @@ class _Screen_TransactionState extends State<Screen_Transaction>
 
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => ScreenMain()));
+              },
+              icon: Icon(
+                Icons.arrow_back,
+                size: 30,
+              )),
           backgroundColor: Colors.blue,
           elevation: 0,
           automaticallyImplyLeading: false,

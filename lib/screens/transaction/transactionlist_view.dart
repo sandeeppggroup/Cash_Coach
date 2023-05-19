@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:money_management/screens/transaction/view_transaction.dart';
 
 import '../../../models/category/category_model.dart';
@@ -191,9 +192,13 @@ class _DropdownListState extends State<TransationListView> {
               )
             : Center(
                 child: Container(
-                    height: 150,
-                    width: 150,
-                    child: Center(child: Text('Empty'))),
+                    height: 250,
+                    width: 250,
+                    child: Center(
+                      child: Lottie.asset(
+                        'images/empty.json',
+                      ),
+                    )),
               ));
   }
 }

@@ -41,6 +41,8 @@ dependencies:
   iconly: ^1.0.1
   intl: ^0.18.1
   flutter_slidable: ^3.0.0
+  syncfusion_flutter_charts: ^21.2.5
+  shared_preferences: ^2.1.1
 
 dev_dependencies:
   flutter_test:
