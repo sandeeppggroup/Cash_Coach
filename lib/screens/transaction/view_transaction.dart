@@ -19,12 +19,16 @@ class View_Transaction extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          
           backgroundColor: const Color.fromARGB(255, 3, 20, 114),
+          
           title: const Text(
             'Transaction Details',
             style: TextStyle(fontSize: 23, fontWeight: FontWeight.w700),
           ),
           centerTitle: true,
+          
+          
         ),
         backgroundColor: Colors.white,
         body: Center(

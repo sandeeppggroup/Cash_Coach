@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:money_management/db_functions/category/category_db.dart';
 import 'package:money_management/db_functions/transactions/transaction_db.dart';
 import 'package:money_management/screens/transaction/transactionlist_view.dart';
+import 'package:money_management/search/search.dart';
 
 import '../../../models/transaction/transaction_model.dart';
 import '../home/screen_main.dart';
@@ -18,6 +19,8 @@ class Screen_Transaction extends StatefulWidget {
 
 class _Screen_TransactionState extends State<Screen_Transaction>
     with SingleTickerProviderStateMixin {
+  Icon cusIcon = Icon(Icons.search);
+  Widget cusSearchBar = Text("Transactions");
   late TabController _tabController;
   dynamic dropDownVale = 'All';
   @override
@@ -102,31 +105,23 @@ class _Screen_TransactionState extends State<Screen_Transaction>
 
   @override
   Widget build(BuildContext context) {
-    // results.clear();
     TransactionDB.instance.refresh();
     CategoryDB.instance.refreshUI();
 
     return Scaffold(
         appBar: AppBar(
-          // leading: IconButton(
-          //     onPressed: () {
-          //       Navigator.pushReplacement(context,
-          //           MaterialPageRoute(builder: (context) => ScreenMain()));
-          //     },
-          //     icon: Icon(
-          //       Icons.arrow_back,
-          //       size: 30,
-          //     )),
-          backgroundColor: const Color.fromARGB(255, 3, 20, 114),
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          title: Text(
-            'Transactions',
-            style: TextStyle(
-                fontSize: 25, fontWeight: FontWeight.w800, color: Colors.white),
-          ),
-          centerTitle: true,
-        ),
+            backgroundColor: const Color.fromARGB(255, 3, 20, 114),
+            elevation: 0,
+            automaticallyImplyLeading: false,
+            title: Center(child: Text('Transactions')),
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Search()));
+                  },
+                  icon: Icon(Icons.search))
+            ]),
         backgroundColor: Colors.white,
         body: ValueListenableBuilder(
           valueListenable: TransactionDB.instance.transactionListNOtifier,
