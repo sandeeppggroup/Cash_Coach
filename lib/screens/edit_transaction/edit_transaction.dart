@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -285,13 +287,13 @@ class _EditTransactionState extends State<EditTransaction> {
                   onPressed: () {
                     editTransactionOnclicked();
 
-                    _amountController.clear();
+                    // _amountController.clear();
 
-                    _discriptionController.clear();
+                    // _discriptionController.clear();
 
-                    _dateController.clear();
+                    // _dateController.clear();
 
-                    _categoryController.clear();
+                    // _categoryController.clear();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 4, 78, 207),
@@ -367,7 +369,7 @@ class _EditTransactionState extends State<EditTransaction> {
     if (parsedAmount == null) {
       return;
     }
-
+    log(widget.model.id.toString());
     final model = TransactionModel(
         amount: parsedAmount,
         discription: discriptionText,

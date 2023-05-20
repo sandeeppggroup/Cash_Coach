@@ -55,13 +55,14 @@ class _Statistics_ScreenState extends State<Statistics_Screen>
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.yellow[300],
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.yellow[300],
+        automaticallyImplyLeading: false,
+        backgroundColor: const Color.fromARGB(255, 3, 20, 114),
         title: const Text(
           'Statistics',
           style: TextStyle(
-              color: Colors.black, fontSize: 25, fontWeight: FontWeight.w800),
+              color: Colors.white, fontSize: 25, fontWeight: FontWeight.w800),
         ),
         elevation: 0,
         centerTitle: true,
@@ -75,17 +76,17 @@ class _Statistics_ScreenState extends State<Statistics_Screen>
             ),
             Padding(
               padding: const EdgeInsets.only(
-                bottom: 24,
+                bottom: 16,
               ),
               child: Material(
-                shadowColor: Colors.yellow,
+                shadowColor: Colors.grey,
                 borderRadius: BorderRadius.circular(18),
                 elevation: 10,
                 child: Container(
                   height: height * 0.0657,
                   width: width * 0.83,
                   decoration: BoxDecoration(
-                      color: Colors.yellowAccent,
+                      color: const Color.fromARGB(255, 4, 78, 207),
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: const [
                         BoxShadow(
@@ -105,6 +106,13 @@ class _Statistics_ScreenState extends State<Statistics_Screen>
                       left: 12,
                     ),
                     child: DropdownButton<String>(
+                      dropdownColor: Colors.blue,
+                      borderRadius: BorderRadius.circular(20),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
                       isExpanded: true,
                       underline: const Divider(
                         color: Colors.transparent,
@@ -134,36 +142,41 @@ class _Statistics_ScreenState extends State<Statistics_Screen>
                 ),
               ),
             ),
-            TabBar(
-              indicator: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Colors.yellowAccent,
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.grey,
-                      blurRadius: 15,
-                      offset: Offset(5, 5),
-                    ),
-                    BoxShadow(
-                      color: Colors.grey,
-                      blurRadius: 15,
-                      offset: Offset(-5, -5),
-                    ),
-                  ]),
-              controller: tabController,
-              labelColor: Colors.black,
-              unselectedLabelColor: Colors.black,
-              tabs: const [
-                Tab(
-                  text: 'Overview',
-                ),
-                Tab(
-                  text: 'Income',
-                ),
-                Tab(
-                  text: 'Expense',
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: TabBar(
+                indicator: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: const Color.fromARGB(255, 4, 78, 207),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 15,
+                        offset: Offset(5, 5),
+                      ),
+                      BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 15,
+                        offset: Offset(-5, -5),
+                      ),
+                    ]),
+                controller: tabController,
+                labelColor: Colors.white,
+                labelStyle:
+                    TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                unselectedLabelColor: Colors.black,
+                tabs: const [
+                  Tab(
+                    text: 'Overview',
+                  ),
+                  Tab(
+                    text: 'Income',
+                  ),
+                  Tab(
+                    text: 'Expense',
+                  ),
+                ],
+              ),
             ),
             SizedBox(
               height: height * 0.0263,

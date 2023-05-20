@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:money_management/db_functions/category/category_db.dart';
@@ -353,6 +355,12 @@ class _AddTransactionState extends State<AddTransaction> {
       return;
     }
 
+    if (_selectedCategoryModel == null ||
+        _selectedCategoryType == null ||
+        _selectedDate == null) {
+      return;
+    }
+
     final model = TransactionModel(
         amount: parsedAmount,
         discription: discriptionText,
@@ -360,6 +368,7 @@ class _AddTransactionState extends State<AddTransaction> {
         type: _selectedCategoryType!,
         category: _selectedCategoryModel!,
         id: DateTime.now().millisecondsSinceEpoch.toString());
+    log(model.id.toString(),name: 'add transation id check');
     await TransactionDB.instance.addTransaction(model);
     Navigator.of(context).pop();
     TransactionDB.instance.refresh();

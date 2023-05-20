@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
@@ -434,8 +435,9 @@ class _ScreenHomeState extends State<ScreenHome> {
                   // values
                   itemBuilder: (BuildContext context, int index) {
                     final values = newList[index];
+                    log(newList[index].id.toString(),name:'home list');
                     return Slidable(
-                      key: Key(values.id?.toString() ?? ''),
+                      key: Key(values.id.toString()),
                       startActionPane: ActionPane(
                         motion: const StretchMotion(),
                         children: [
@@ -488,7 +490,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                                       TextButton(
                                           onPressed: () {
                                             TransactionDB.instance
-                                                .deleteTransaction(index);
+                                                .deleteTransaction(values.id!);
                                             Navigator.of(context).pop();
                                           },
                                           child: const Text('Ok'))

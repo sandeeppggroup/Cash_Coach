@@ -8,7 +8,7 @@ class ChartDatas {
   ChartDatas({required this.category, required this.amount});
 }
 
-chartLogic(List<TransactionModel> model) {
+chartLogic(List<TransactionModel> model) { 
   double value;
   String categoryname;
   List<ChartDatas> newData = [];

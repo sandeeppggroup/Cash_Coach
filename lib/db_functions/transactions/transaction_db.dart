@@ -1,5 +1,7 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
 
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -12,7 +14,7 @@ const TRANSACTION_DB_NAME = 'transaction-db';
 abstract class TransactionDbFunctions {
   Future<void> addTransaction(TransactionModel obj);
   Future<List<TransactionModel>> getAllTransaction();
-  Future<void> deleteTransaction(int id);
+  Future<void> deleteTransaction(String id);
   Future<void> editTransaction(TransactionModel model);
 }
 
@@ -27,7 +29,7 @@ class TransactionDB implements TransactionDbFunctions {
   ValueNotifier<List<TransactionModel>> transactionListNOtifier =
       ValueNotifier([]);
 
-      ValueNotifier<List<TransactionModel>> incomeListenable = ValueNotifier([]);
+  ValueNotifier<List<TransactionModel>> incomeListenable = ValueNotifier([]);
   ValueNotifier<List<TransactionModel>> expenseListenable = ValueNotifier([]);
   ValueNotifier<List<TransactionModel>> transationAll = ValueNotifier([]);
 
@@ -36,17 +38,16 @@ class TransactionDB implements TransactionDbFunctions {
     final transactionDB =
         await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
     transactionDB.put(obj.id, obj);
+    log(obj.id.toString(),name:'db func id check');
     refresh();
   }
 
   Future<void> refresh() async {
     final list = await getAllTransaction();
-      incomeListenable.value.clear();
+    incomeListenable.value.clear();
     expenseListenable.value.clear();
     transationAll.value.clear();
-     await Future.forEach(list, (TransactionModel transation) {
-    
-      
+    await Future.forEach(list, (TransactionModel transation) {
       if (transation.category.type == CategoryType.income) {
         incomeListenable.value.add(transation);
         // totalAmountVarible = totalAmountVarible + transation.amount;
@@ -68,9 +69,10 @@ class TransactionDB implements TransactionDbFunctions {
     list.sort((first, second) => second.date.compareTo(first.date));
     transactionListNOtifier.value.clear();
     transactionListNOtifier.value.addAll(list);
+     transactionListNOtifier.notifyListeners();
     balanceAmount();
 
-    transactionListNOtifier.notifyListeners();
+   
   }
 
   @override
@@ -82,10 +84,10 @@ class TransactionDB implements TransactionDbFunctions {
   }
 
   @override
-  Future<void> deleteTransaction(int id) async {
+  Future<void> deleteTransaction(String id) async {
     final transactionDB =
         await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
-    await transactionDB.deleteAt(id);
+    await transactionDB.delete(id);
     refresh();
   }
 

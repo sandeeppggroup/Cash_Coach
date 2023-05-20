@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+// ignore: camel_case_types, must_be_immutable
 class View_Transaction extends StatelessWidget {
   double amount;
   String category;
@@ -17,7 +18,15 @@ class View_Transaction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.yellow[300],
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 3, 20, 114),
+          title: const Text(
+            'Transaction Details',
+            style: TextStyle(fontSize: 23, fontWeight: FontWeight.w700),
+          ),
+          centerTitle: true,
+        ),
+        backgroundColor: Colors.white,
         body: Center(
           child: Container(
             height: MediaQuery.of(context).size.height * 0.6,
@@ -28,77 +37,88 @@ class View_Transaction extends StatelessWidget {
                     color: Colors.grey.withOpacity(0.9),
                     spreadRadius: 2,
                     blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
+                    offset: const Offset(0, 3), // changes position of shadow
                   ),
                 ],
-                borderRadius: BorderRadius.circular(60),
-                gradient:
-                    LinearGradient(colors: [Colors.yellow, Colors.white])),
+                borderRadius: BorderRadius.circular(30),
+                gradient: const LinearGradient(colors: [
+                  Colors.white,
+                  Colors.white,
+                ])),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Details',
+                const Text('Details',
                     style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.w800,
-                        color: Colors.black)),
-                SizedBox(height: 40),
+                        color: Color.fromARGB(255, 4, 78, 207))),
+                const SizedBox(height: 20),
                 Padding(
-                  padding: EdgeInsets.only(top: 30),
+                  padding: const EdgeInsets.only(top: 0),
                   child: ListTile(
-                    leading: Icon(
+                    leading: const Icon(
                       Icons.note_add,
-                      color: Colors.black,
+                      color: Color.fromARGB(255, 4, 78, 207),
                       size: 30,
                     ),
                     title: Text(
-                      'Notes :${description}',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                      'Notes : $description',
+                      style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          color: Color.fromARGB(255, 4, 78, 207)),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 30),
+                  padding: const EdgeInsets.only(top: 30),
                   child: ListTile(
-                    leading: Icon(
+                    leading: const Icon(
                       Icons.currency_rupee,
-                      color: Colors.black,
+                      color: Color.fromARGB(255, 4, 78, 207),
                       size: 30,
                     ),
                     title: Text(
-                      'Amount :${amount}',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                      'Amount : $amount',
+                      style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          color: Color.fromARGB(255, 4, 78, 207)),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 30),
+                  padding: const EdgeInsets.only(top: 30),
                   child: ListTile(
-                    leading: Icon(
+                    leading: const Icon(
                       Icons.calendar_month,
-                      color: Colors.black,
+                      color: Color.fromARGB(255, 4, 78, 207),
                       size: 30,
                     ),
                     title: Text(
-                      'Date :${parseDate(date)}',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                      'Date : ${parseDate(date)}',
+                      style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          color: Color.fromARGB(255, 4, 78, 207)),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 30),
+                  padding: const EdgeInsets.only(top: 30),
                   child: ListTile(
-                    leading: Icon(
+                    leading: const Icon(
                       Icons.dashboard,
-                      color: Colors.black,
+                      color: Color.fromARGB(255, 4, 78, 207),
                       size: 30,
                     ),
                     title: Text(
-                      'Category :${category}',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                      'Category : $category',
+                      style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          color: Color.fromARGB(255, 4, 78, 207)),
                     ),
                   ),
                 ),
@@ -109,8 +129,8 @@ class View_Transaction extends StatelessWidget {
   }
 
   String parseDate(DateTime date) {
-    final _date = DateFormat.MMMd().format(date);
-    final _splitedDate = _date.split(' ');
-    return '${_splitedDate.last}${_splitedDate.first}';
-}
+    final date0 = DateFormat.MMMd().format(date);
+    final splitedDate = date0.split(' ');
+    return '${splitedDate.last}${splitedDate.first}';
+  }
 }
