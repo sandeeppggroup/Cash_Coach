@@ -60,15 +60,8 @@ class _AddTransactionState extends State<AddTransaction> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 35,
-              ),
-              const Text(
-                'Amount',
-                style: TextStyle(fontSize: 25),
-              ),
-              const SizedBox(
-                height: 3,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .05,
               ),
               // Textformfield for amount *******************************************  1
               TextFormField(
@@ -100,8 +93,8 @@ class _AddTransactionState extends State<AddTransaction> {
                 },
                 textInputAction: TextInputAction.done,
               ),
-              const SizedBox(
-                height: 15,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .03,
               ),
               // Textformfield for Discription *******************************************   2
               TextFormField(
@@ -112,9 +105,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
                 controller: _discriptionController,
                 keyboardType: TextInputType.text,
-                onChanged: (value) {
-                  print('changed to $value');
-                },
+                onChanged: (value) {},
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please enter your discription';
@@ -123,8 +114,8 @@ class _AddTransactionState extends State<AddTransaction> {
                 },
                 textInputAction: TextInputAction.done,
               ),
-              const SizedBox(
-                height: 15,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .03,
               ),
               // Textformfield for Date picker *******************************************  3
               // if (_selectedDate == null)
@@ -135,7 +126,7 @@ class _AddTransactionState extends State<AddTransaction> {
                     onPressed: () {
                       selectDate(context);
                     },
-                    icon: Icon(Icons.calendar_today),
+                    icon: const Icon(Icons.calendar_today),
                   ),
                   labelText: 'Pick your date',
                   border: OutlineInputBorder(
@@ -144,9 +135,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 readOnly: true,
                 controller: _dateController,
                 keyboardType: TextInputType.text,
-                onChanged: (value) {
-                  print('Name changed to $value');
-                },
+                onChanged: (value) {},
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please select a date';
@@ -157,8 +146,8 @@ class _AddTransactionState extends State<AddTransaction> {
               ),
               // else
 
-              const SizedBox(
-                height: 30,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .05,
               ),
 
               // Radiobutton and elevatedButtons *******************************************
@@ -176,7 +165,7 @@ class _AddTransactionState extends State<AddTransaction> {
                     },
                   ),
                   SizedBox(
-                    height: 32,
+                    height: MediaQuery.of(context).size.height * .04,
                     child: ElevatedButton(
                       onPressed: () {
                         setState(() {
@@ -194,7 +183,7 @@ class _AddTransactionState extends State<AddTransaction> {
                     ),
                   ),
                   SizedBox(
-                    height: 30,
+                    height: MediaQuery.of(context).size.height * .04,
                     child: ElevatedButton(
                       onPressed: () {
                         setState(() {
@@ -223,8 +212,8 @@ class _AddTransactionState extends State<AddTransaction> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 30,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .04,
               ),
 
               // Textformfield for category *******************************************   4
@@ -262,12 +251,12 @@ class _AddTransactionState extends State<AddTransaction> {
                         borderRadius: BorderRadius.circular(20))),
               ),
 
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .03,
               ),
               SizedBox(
-                height: 50,
-                width: 340,
+                height: MediaQuery.of(context).size.height * .07,
+                width: MediaQuery.of(context).size.width * .9,
                 child: ElevatedButton(
                   onPressed: () {
                     addTransactionOnclicked();
@@ -368,8 +357,9 @@ class _AddTransactionState extends State<AddTransaction> {
         type: _selectedCategoryType!,
         category: _selectedCategoryModel!,
         id: DateTime.now().millisecondsSinceEpoch.toString());
-    log(model.id.toString(),name: 'add transation id check');
+    log(model.id.toString(), name: 'add transation id check');
     await TransactionDB.instance.addTransaction(model);
+    // ignore: use_build_context_synchronously
     Navigator.of(context).pop();
     TransactionDB.instance.refresh();
   }

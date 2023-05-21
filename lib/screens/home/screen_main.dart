@@ -11,7 +11,7 @@ class ScreenMain extends StatelessWidget {
   ScreenMain({super.key});
   static ValueNotifier<int> selectedIndexNotifier = ValueNotifier(0);
   final _pages = [
-    ScreenHome(),
+    const ScreenHome(),
     const ScreenCategory(),
     const Screen_Transaction(),
     Statistics_Screen()
@@ -33,21 +33,20 @@ class ScreenMain extends StatelessWidget {
         valueListenable: selectedIndexNotifier,
         builder: (context, value, child) => selectedIndexNotifier.value < 2
             ? FloatingActionButton(
-                backgroundColor: Color.fromARGB(255, 4, 78, 207),
+                backgroundColor: const Color.fromARGB(255, 4, 78, 207),
                 onPressed: () {
                   if (selectedIndexNotifier.value == 0) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AddTransaction()));
+                            builder: (context) => const AddTransaction()));
                   } else if (selectedIndexNotifier.value == 1) {
-                    print('Add Category');
                     showCategoryAddPopup(context);
                   }
                 },
                 child: const Icon(Icons.add),
               )
-            : Text(''),
+            : const Text(''),
       ),
     );
   }

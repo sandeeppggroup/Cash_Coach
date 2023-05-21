@@ -4,7 +4,7 @@ import 'package:money_management/screens/home/screen_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ScreenSplashTwo extends StatefulWidget {
-  ScreenSplashTwo({super.key});
+  const ScreenSplashTwo({super.key});
 
   @override
   State<ScreenSplashTwo> createState() => _ScreenSplashTwoState();
@@ -16,7 +16,6 @@ class _ScreenSplashTwoState extends State<ScreenSplashTwo> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-          
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -50,11 +49,8 @@ class _ScreenSplashTwoState extends State<ScreenSplashTwo> {
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const SizedBox(
-                  height: 20,
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.04,
                 ),
                 SizedBox(
                   width: 200,
@@ -64,10 +60,15 @@ class _ScreenSplashTwoState extends State<ScreenSplashTwo> {
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                       prefs.setBool('check', true);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return ScreenMain();
-                      }));
+                      // ignore: use_build_context_synchronously
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ScreenMain();
+                          },
+                        ),
+                      );
                     },
                     child: const Text('Continue'),
                   ),

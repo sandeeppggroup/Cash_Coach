@@ -9,6 +9,7 @@ import 'package:money_management/account/balance.dart';
 import 'package:money_management/models/category/category_model.dart';
 import 'package:money_management/models/transaction/transaction_model.dart';
 
+// ignore: constant_identifier_names
 const TRANSACTION_DB_NAME = 'transaction-db';
 
 abstract class TransactionDbFunctions {

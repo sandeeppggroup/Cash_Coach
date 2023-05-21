@@ -1,5 +1,4 @@
-import 'dart:ffi';
-
+// ignore_for_file: invalid_use_of_visible_for_testing_member
 import 'package:flutter/material.dart';
 import 'package:money_management/db_functions/category/category_db.dart';
 import 'package:money_management/models/category/category_model.dart';
@@ -10,18 +9,18 @@ ValueNotifier<CategoryType> selectedCategoryNotifier =
 Future<void> showCategoryAddPopup(BuildContext context) async {
   final nameEditingController = TextEditingController();
 
-  final _formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   showDialog(
     context: context,
     builder: (ctx) {
       return Form(
-        key: _formKey,
+        key: formKey,
         child: SimpleDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
           backgroundColor: Colors.white,
           elevation: 100,
-          title: Center(child: Text('Add Category')),
+          title: const Center(child: Text('Add Category')),
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -56,8 +55,8 @@ Future<void> showCategoryAddPopup(BuildContext context) async {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState?.save();
+                  if (formKey.currentState!.validate()) {
+                    formKey.currentState?.save();
                     final categoryName = nameEditingController.text;
 
                     final check = selectedCategoryNotifier.value ==
@@ -126,6 +125,7 @@ class RadioButton extends StatelessWidget {
                   return;
                 }
                 selectedCategoryNotifier.value = value;
+                // ignore: invalid_use_of_protected_member
                 selectedCategoryNotifier.notifyListeners();
               },
             );

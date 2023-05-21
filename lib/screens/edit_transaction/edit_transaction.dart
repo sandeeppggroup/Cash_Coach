@@ -1,9 +1,5 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
 import 'package:money_management/db_functions/category/category_db.dart';
 import 'package:money_management/db_functions/transactions/transaction_db.dart';
@@ -23,8 +19,6 @@ class EditTransaction extends StatefulWidget {
 
 class _EditTransactionState extends State<EditTransaction> {
   final _amountController = TextEditingController();
-
-  final _categoryController = TextEditingController();
 
   final _discriptionController = TextEditingController();
 
@@ -62,7 +56,7 @@ class _EditTransactionState extends State<EditTransaction> {
         backgroundColor: const Color.fromARGB(255, 4, 78, 207),
         centerTitle: true,
         title: const Text(
-          'Add Transaction',
+          'Edit Transaction',
         ),
       ),
       body: Padding(
@@ -72,16 +66,10 @@ class _EditTransactionState extends State<EditTransaction> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 35,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.06,
               ),
-              const Text(
-                'Amount',
-                style: TextStyle(fontSize: 25),
-              ),
-              const SizedBox(
-                height: 3,
-              ),
+
               // Textformfield for amount *******************************************  1
               TextFormField(
                 decoration: InputDecoration(
@@ -115,9 +103,10 @@ class _EditTransactionState extends State<EditTransaction> {
                 },
                 textInputAction: TextInputAction.done,
               ),
-              const SizedBox(
-                height: 15,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.025,
               ),
+
               // Textformfield for Discription *******************************************   2
               TextFormField(
                 decoration: InputDecoration(
@@ -127,9 +116,7 @@ class _EditTransactionState extends State<EditTransaction> {
                 ),
                 controller: _discriptionController,
                 keyboardType: TextInputType.text,
-                onChanged: (value) {
-                  print('changed to $value');
-                },
+                onChanged: (value) {},
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please enter your discription';
@@ -138,11 +125,10 @@ class _EditTransactionState extends State<EditTransaction> {
                 },
                 textInputAction: TextInputAction.done,
               ),
-              const SizedBox(
-                height: 15,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.025,
               ),
-              // Textformfield for Date picker *******************************************  3
-              // if (_selectedDate == null)
+
               TextFormField(
                 onTap: () {},
                 decoration: InputDecoration(
@@ -150,7 +136,7 @@ class _EditTransactionState extends State<EditTransaction> {
                     onPressed: () {
                       selectDate(context);
                     },
-                    icon: Icon(Icons.calendar_today),
+                    icon: const Icon(Icons.calendar_today),
                   ),
                   labelText: 'Pick your date',
                   border: OutlineInputBorder(
@@ -159,9 +145,7 @@ class _EditTransactionState extends State<EditTransaction> {
                 readOnly: true,
                 controller: _dateController,
                 keyboardType: TextInputType.text,
-                onChanged: (value) {
-                  print('Name changed to $value');
-                },
+                onChanged: (value) {},
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please select a date';
@@ -170,10 +154,9 @@ class _EditTransactionState extends State<EditTransaction> {
                 },
                 textInputAction: TextInputAction.done,
               ),
-              // else
 
-              const SizedBox(
-                height: 30,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.03,
               ),
 
               // Radiobutton and elevatedButtons *******************************************
@@ -191,7 +174,7 @@ class _EditTransactionState extends State<EditTransaction> {
                     },
                   ),
                   SizedBox(
-                    height: 32,
+                    height: MediaQuery.of(context).size.height * 0.04,
                     child: ElevatedButton(
                       onPressed: () {
                         setState(() {
@@ -209,7 +192,7 @@ class _EditTransactionState extends State<EditTransaction> {
                     ),
                   ),
                   SizedBox(
-                    height: 30,
+                    height: MediaQuery.of(context).size.height * 0.04,
                     child: ElevatedButton(
                       onPressed: () {
                         setState(() {
@@ -238,8 +221,8 @@ class _EditTransactionState extends State<EditTransaction> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 30,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.03,
               ),
 
               // Textformfield for category *******************************************   4
@@ -277,23 +260,15 @@ class _EditTransactionState extends State<EditTransaction> {
                         borderRadius: BorderRadius.circular(20))),
               ),
 
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.025,
               ),
               SizedBox(
-                height: 50,
-                width: 340,
+                height: MediaQuery.of(context).size.height * 0.07,
+                width: MediaQuery.of(context).size.width * 0.9,
                 child: ElevatedButton(
                   onPressed: () {
                     editTransactionOnclicked();
-
-                    // _amountController.clear();
-
-                    // _discriptionController.clear();
-
-                    // _dateController.clear();
-
-                    // _categoryController.clear();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 4, 78, 207),
@@ -379,6 +354,7 @@ class _EditTransactionState extends State<EditTransaction> {
         id: widget.model.id);
     await TransactionDB.instance.editTransaction(model);
     TransactionDB.instance.refresh();
+    // ignore: use_build_context_synchronously
     Navigator.of(context).pop();
   }
 }

@@ -152,19 +152,34 @@ filterFunction() async {
       expenseLastMonthNotifier.value.add(element);
     }
   }
+  // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
   overviewNotifier.notifyListeners();
+  // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
   todayNotifier.notifyListeners();
+  // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
   yesterdayNotifier.notifyListeners();
+  // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
   incomeNotifier1.notifyListeners();
+  // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
   expenseNotifier1.notifyListeners();
+  // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
   incomeTodayNotifier.notifyListeners();
+  // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
   incomeYesterdayNotifier.notifyListeners();
+  // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
   expenseTodayNotifier.notifyListeners();
+  // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
   expenseYesterdayNotifier.notifyListeners();
+  // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
   lastWeekNotifier.notifyListeners();
+  // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
   incomeLastWeekNotifier.notifyListeners();
+  // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
   expenseLastWeekNotifier.notifyListeners();
+  // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
   lastMonthNotifier.notifyListeners();
+  // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
   incomeLastMonthNotifier.notifyListeners();
+  // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
   expenseLastMonthNotifier.notifyListeners();
 }

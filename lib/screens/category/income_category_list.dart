@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-
 import '../../db_functions/category/category_db.dart';
 import '../../models/category/category_model.dart';
 
@@ -17,19 +14,14 @@ class IncomeCategoryList extends StatelessWidget {
           itemBuilder: (ctx, index) {
             final category = newList[index];
             return Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30)),
               elevation: 30,
               child: ListTile(
                 title: Text(category.name),
                 trailing: Wrap(
                   spacing: 2, // space between two icons
                   children: <Widget>[
-                    // IconButton(
-                    //   onPressed: () {},
-                    //   icon: const Icon(
-                    //     Icons.edit,
-                    //     color: Colors.blueGrey,
-                    //   ),
-                    // ),
                     IconButton(
                       onPressed: () {
                         showDeleteDialog(context, category.id);
@@ -45,8 +37,8 @@ class IncomeCategoryList extends StatelessWidget {
             );
           },
           separatorBuilder: (ctx, index) {
-            return const SizedBox(
-              height: 10,
+            return SizedBox(
+              height: MediaQuery.of(context).size.height * .015,
             );
           },
           itemCount: newList.length,
@@ -60,17 +52,17 @@ class IncomeCategoryList extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Category'),
-          content: Text('Are you sure you want to delete this category?'),
+          title: const Text('Delete Category'),
+          content: const Text('Are you sure you want to delete this category?'),
           actions: <Widget>[
             ElevatedButton(
-              child: Text('CANCEL'),
+              child: const Text('CANCEL'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             ElevatedButton(
-              child: Text('DELETE'),
+              child: const Text('DELETE'),
               onPressed: () {
                 CategoryDB.instance.deleteCategory(id);
                 Navigator.of(context).pop();

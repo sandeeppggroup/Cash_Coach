@@ -1,6 +1,4 @@
 import 'dart:developer';
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -73,11 +71,11 @@ class _ScreenHomeState extends State<ScreenHome> {
             ListTile(
               title: Row(
                 children: [
-                  Icon(Icons.person),
+                  const Icon(Icons.person),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.03,
                   ),
-                  Text('About'),
+                  const Text('About'),
                 ],
               ),
               onTap: () {
@@ -102,24 +100,24 @@ class _ScreenHomeState extends State<ScreenHome> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Delete'),
-                        content: Text(
+                        title: const Text('Reset data?'),
+                        content: const Text(
                             'Are you sure?Do you want to reset entire data'),
                         actions: [
                           TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: Text('Cancel')),
+                              child: const Text('Cancel')),
                           TextButton(
                               onPressed: () async {
                                 SharedPreferences prefs =
                                     await SharedPreferences.getInstance();
                                 await prefs.clear();
-                                SharedPreferences tectcontrol =
+                                SharedPreferences textcontrol =
                                     await SharedPreferences.getInstance();
-                                await tectcontrol.clear();
-                                final transationDb =
+                                await textcontrol.clear();
+                                final transactionDb =
                                     await Hive.openBox<TransactionModel>(
                                         'transactio-db');
                                 final categorydb =
@@ -127,17 +125,18 @@ class _ScreenHomeState extends State<ScreenHome> {
                                         'category_database');
 
                                 categorydb.clear();
-                                transationDb.clear();
+                                transactionDb.clear();
                                 incomeNotifier = ValueNotifier(0);
                                 expenseNotifier = ValueNotifier(0);
                                 totalNotifier = ValueNotifier(0);
 
+                                // ignore: use_build_context_synchronously
                                 Navigator.of(context)
                                     .pushReplacement(MaterialPageRoute(
-                                  builder: (context) => ScreenSplashTwo(),
+                                  builder: (context) => const ScreenSplashTwo(),
                                 ));
                               },
-                              child: Text('Ok'))
+                              child: const Text('Ok'))
                         ],
                       );
                     });
@@ -196,11 +195,11 @@ class _ScreenHomeState extends State<ScreenHome> {
             ListTile(
               title: Row(
                 children: [
-                  Icon(Icons.arrow_back),
+                  const Icon(Icons.arrow_back),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.03,
                   ),
-                  Text('Back to app'),
+                  const Text('Back to app'),
                 ],
               ),
               onTap: () {
@@ -284,7 +283,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                         child: Row(
                           children: [
                             Padding(
-                              padding: EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(6.0),
                               child: CircleAvatar(
                                 backgroundColor: Colors.green,
                                 child: Icon(
@@ -342,7 +341,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                             Row(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.all(6.0),
+                                  padding: const EdgeInsets.all(6.0),
                                   child: CircleAvatar(
                                     backgroundColor: Colors.red,
                                     child: Icon(
@@ -414,7 +413,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Screen_Transaction(),
+                          builder: (context) => const Screen_Transaction(),
                         ));
                   },
                   child: const Text(
@@ -435,7 +434,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                   // values
                   itemBuilder: (BuildContext context, int index) {
                     final values = newList[index];
-                    log(newList[index].id.toString(),name:'home list');
+                    log(newList[index].id.toString(), name: 'home list');
                     return Slidable(
                       key: Key(values.id.toString()),
                       startActionPane: ActionPane(
@@ -511,7 +510,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                             color: const Color.fromARGB(255, 4, 78, 207),
                             elevation: 10,
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
+                                borderRadius: BorderRadius.circular(30)),
                             child: Center(
                               child: ListTile(
                                 title: Padding(

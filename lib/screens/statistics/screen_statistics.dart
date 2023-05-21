@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-
 import 'package:lottie/lottie.dart';
 import 'package:money_management/db_functions/transactions/transaction_db.dart';
 import 'package:money_management/graph/graph_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
 import '../../Account/balance.dart';
 import '../../chart_function/chart_function.dart';
 
+// ignore: camel_case_types
 class Statistics_Screen extends StatefulWidget {
-  Statistics_Screen({Key? key}) : super(key: key);
+  const Statistics_Screen({Key? key}) : super(key: key);
 
   @override
   State<Statistics_Screen> createState() => _Statistics_ScreenState();
 }
 
+// ignore: camel_case_types
 class _Statistics_ScreenState extends State<Statistics_Screen>
     with TickerProviderStateMixin {
   List<ChartDatas> dataExpense = chartLogic(expenseNotifier1.value);
@@ -62,9 +62,8 @@ class _Statistics_ScreenState extends State<Statistics_Screen>
         title: const Text(
           'Statistics',
           style: TextStyle(
-              color: Colors.white, fontSize: 25, fontWeight: FontWeight.w800),
+              color: Colors.white, fontSize: 25, fontWeight: FontWeight.w700),
         ),
-        elevation: 0,
         centerTitle: true,
       ),
       body: ValueListenableBuilder(
@@ -72,7 +71,7 @@ class _Statistics_ScreenState extends State<Statistics_Screen>
         builder: (context, value, Widget? _) => Column(
           children: [
             SizedBox(
-              height: height * 0.039,
+              height: MediaQuery.of(context).size.height * 0.04,
             ),
             Padding(
               padding: const EdgeInsets.only(
@@ -101,14 +100,14 @@ class _Statistics_ScreenState extends State<Statistics_Screen>
                         ),
                       ]),
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                      right: 10,
-                      left: 12,
+                    padding: EdgeInsets.only(
+                      right: MediaQuery.of(context).size.height * 0.03,
+                      left: MediaQuery.of(context).size.height * 0.03,
                     ),
                     child: DropdownButton<String>(
                       dropdownColor: Colors.blue,
                       borderRadius: BorderRadius.circular(20),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
@@ -163,7 +162,7 @@ class _Statistics_ScreenState extends State<Statistics_Screen>
                 controller: tabController,
                 labelColor: Colors.white,
                 labelStyle:
-                    TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 unselectedLabelColor: Colors.black,
                 tabs: const [
                   Tab(
@@ -179,11 +178,8 @@ class _Statistics_ScreenState extends State<Statistics_Screen>
               ),
             ),
             SizedBox(
-              height: height * 0.0263,
-            ),
-            SizedBox(
               width: double.maxFinite,
-              height: height * 0.526,
+              height: MediaQuery.of(context).size.height * 0.55,
               child: TabBarView(
                 controller: tabController,
                 children: [
@@ -193,10 +189,26 @@ class _Statistics_ScreenState extends State<Statistics_Screen>
                     ),
                     child: chartdivertFunctionOverview().isEmpty
                         ? Center(
-                            child: Lottie.asset(
-                              'images/empty.json',
-                              width: width * 0.9,
-                              height: height * 0.4,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.4,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  child: Center(
+                                    child: Lottie.asset(
+                                      'images/empty.json',
+                                    ),
+                                  ),
+                                ),
+                                const Text(
+                                  'Data is empty',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
                             ),
                           )
                         : SfCircularChart(
@@ -208,7 +220,7 @@ class _Statistics_ScreenState extends State<Statistics_Screen>
                             series: <CircularSeries>[
                               PieSeries<ChartDatas, String>(
                                 dataLabelSettings: const DataLabelSettings(
-                                  color: Colors.amberAccent,
+                                  color: Colors.green,
                                   isVisible: true,
                                   connectorLineSettings: ConnectorLineSettings(
                                       type: ConnectorType.curve),
@@ -232,10 +244,26 @@ class _Statistics_ScreenState extends State<Statistics_Screen>
                     ),
                     child: chartdivertFunctionIncome().isEmpty
                         ? Center(
-                            child: Lottie.asset(
-                              'images/empty.json',
-                              width: width * 0.9,
-                              height: height * 0.4,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.4,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  child: Center(
+                                    child: Lottie.asset(
+                                      'images/empty.json',
+                                    ),
+                                  ),
+                                ),
+                                const Text(
+                                  'Data is empty',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
                             ),
                           )
                         : SfCircularChart(
@@ -270,10 +298,26 @@ class _Statistics_ScreenState extends State<Statistics_Screen>
                     ),
                     child: chartdivertFunctionExpense().isEmpty
                         ? Center(
-                            child: Lottie.asset(
-                              'images/empty.json',
-                              width: width * 0.9,
-                              height: height * 0.4,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.4,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  child: Center(
+                                    child: Lottie.asset(
+                                      'images/empty.json',
+                                    ),
+                                  ),
+                                ),
+                                const Text(
+                                  'Data is empty',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
                             ),
                           )
                         : SfCircularChart(

@@ -1,8 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter/widgets.dart';
 import 'package:money_management/db_functions/category/category_db.dart';
 
 import '../../models/category/category_model.dart';
@@ -19,19 +15,14 @@ class ExpenseCategoryList extends StatelessWidget {
           itemBuilder: (ctx, index) {
             final category = newList[index];
             return Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30)),
               elevation: 30,
               child: ListTile(
                 title: Text(category.name),
                 trailing: Wrap(
                   spacing: 2, // space between two icons
                   children: <Widget>[
-                    // IconButton(
-                    //   onPressed: () {},
-                    //   icon: const Icon(
-                    //     Icons.edit,
-                    //     color: Colors.blueGrey,
-                    //   ),
-                    // ),
                     IconButton(
                       onPressed: () {
                         showDeleteDialog(context, category.id);
@@ -47,8 +38,8 @@ class ExpenseCategoryList extends StatelessWidget {
             );
           },
           separatorBuilder: (ctx, index) {
-            return const SizedBox(
-              height: 10,
+            return SizedBox(
+              height: MediaQuery.of(context).size.height * .015,
             );
           },
           itemCount: newList.length,
