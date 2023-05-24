@@ -1,7 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.money_management">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
    <application
-        android:label="money_management"
+        android:label="Cash Coach"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -119,7 +119,12 @@ class _ScreenHomeState extends State<ScreenHome> {
                                 await textcontrol.clear();
                                 final transactionDb =
                                     await Hive.openBox<TransactionModel>(
-                                        'transactio-db');
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        'transaction-db');
                                 final categorydb =
                                     await Hive.openBox<CategoryModel>(
                                         'category_database');
